@@ -491,19 +491,6 @@
           
             
             
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/06/27/JPEG隐写术之F5、-F5和nsF5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/06/27/JPEG隐写术之F5、-F5和nsF5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
           
 
           
@@ -1046,7 +1033,7 @@
           
 
   
-    <div class="comments" id="comments">
+    <div class="comments" id="gitalk-container">
     </div>
 
   
@@ -1430,37 +1417,36 @@
 
 
   
+
+
   
+    
 
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 
 
 
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
 
 <script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
+  var gitalk = new Gitalk({
+    clientID: 'ee4d73cfb2c4a1dc4831',
+    clientSecret: '236cac6330147a2802514770d46103305a4d69ad',
+    repo: 'MyBlog',
+    owner: 'Odinaris',
+    admin: ['Odinaris'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
   });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: true,
-    appId: '5V01CuehI4XwxkqseRPRfCvL-gzGzoHsz',
-    appKey: 'DcrV7lXCCL3At3gbJtSThBe9',
-    placeholder: '我觉得，你的声音一定很美。',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false,
-    lang: '' || 'zh-cn'
-  });
+  gitalk.render('gitalk-container');
 </script>
-
-
-
 
   
 
