@@ -98,11 +98,11 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="JPEG隐写术之F5、-F5和nsF5">
 <meta property="og:url" content="http://odinaris.github.io/2019/06/27/JPEG隐写术之F5、-F5和nsF5/index.html">
-<meta property="og:site_name" content="YangDu's Research">
+<meta property="og:site_name" content="等你爱我">
 <meta property="og:description" content="本文首先对隐写术中经典算法F5进行介绍，由于F5存在的缺陷，进而引出对改进算法-F5和nsF5的介绍，主要包括公式原理、源码分析等内容。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://odinaris.github.io/images/nsF5.jpg">
-<meta property="og:updated_time" content="2019-06-28T07:55:25.026Z">
+<meta property="og:updated_time" content="2019-06-30T16:43:06.479Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JPEG隐写术之F5、-F5和nsF5">
 <meta name="twitter:description" content="本文首先对隐写术中经典算法F5进行介绍，由于F5存在的缺陷，进而引出对改进算法-F5和nsF5的介绍，主要包括公式原理、源码分析等内容。">
@@ -110,7 +110,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="YangDu's Research" type="application/atom+xml">
+  <link rel="alternate" href="/atom.xml" title="等你爱我" type="application/atom+xml">
 
 
 
@@ -125,7 +125,7 @@
   };
 </script>
 
-  <title>JPEG隐写术之F5、-F5和nsF5 | YangDu's Research</title>
+  <title>JPEG隐写术之F5、-F5和nsF5 | 等你爱我</title>
   
 
 
@@ -184,7 +184,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">YangDu's Research</span>
+        <span class="site-title">等你爱我</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -412,7 +412,7 @@
     </span>
 
     <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YangDu's Research">
+      <meta itemprop="name" content="等你爱我">
     </span>
 
     
@@ -463,7 +463,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-28 15:55:25" itemprop="dateModified" datetime="2019-06-28T15:55:25+08:00">2019-06-28</time>
+                <time title="修改时间：2019-07-01 00:43:06" itemprop="dateModified" datetime="2019-07-01T00:43:06+08:00">2019-07-01</time>
               
             
           </span>
@@ -522,7 +522,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">3k</span>
+                <span title="本文字数">2.9k</span>
               
 
               
@@ -570,7 +570,7 @@
       
         <p>本文首先对隐写术中经典算法F5进行介绍，由于F5存在的缺陷，进而引出对改进算法-F5和nsF5的介绍，主要包括公式原理、<del>源码分析</del>等内容。</p>
 <a id="more"></a>
-<h1 id="1-参考论文"><a href="#1-参考论文" class="headerlink" title="1. 参考论文"></a>1. 参考论文</h1><div class="table-container">
+<h1 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h1><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -586,12 +586,12 @@
 </tbody>
 </table>
 </div>
-<h1 id="2-F5算法介绍"><a href="#2-F5算法介绍" class="headerlink" title="2. F5算法介绍"></a>2. F5算法介绍</h1><p>F5算法包含两个重要的设计原则，嵌入的特点和矩阵编码。</p>
-<h2 id="2-1-嵌入特点"><a href="#2-1-嵌入特点" class="headerlink" title="2.1 嵌入特点"></a>2.1 嵌入特点</h2><p>F5算法选择的嵌入特征，是只会将DCT系数的绝对值减少1。</p>
+<h1 id="F5算法介绍"><a href="#F5算法介绍" class="headerlink" title="F5算法介绍"></a>F5算法介绍</h1><p>F5算法包含两个重要的设计原则，嵌入的特点和矩阵编码。</p>
+<h2 id="嵌入特点"><a href="#嵌入特点" class="headerlink" title="嵌入特点"></a>嵌入特点</h2><p>F5算法的嵌入特点，是只会将DCT系数的绝对值减少1。</p>
 <p>F5只嵌入到非零AC系数中。嵌入之后存在某非零系数变成0的情况，叫做收缩（shrinkage）现象。这种现象只会发生在原始系数值为正负1的系数身上。</p>
 <p>因为解码器只从非零系数中读取秘密信息，如果修改成0之后，接收端无法确认当前读取的0是原始的零系数还是修改之后的零系数。因此嵌入之后如果生成新的0系数，可想而知，这个新的0系数所代表的秘密信息就无法提取出来。换句话说，其代表的特殊含义就泯然众人矣。</p>
 <p>这时，需要跳过当前系数，重新将秘密数据嵌入到下个系数中。</p>
-<h2 id="2-2-矩阵编码"><a href="#2-2-矩阵编码" class="headerlink" title="2.2 矩阵编码"></a>2.2 矩阵编码</h2><p>矩阵编码可以使得在一个嵌入修改中嵌入更多的比特，从而增加嵌入效率。</p>
+<h2 id="矩阵编码"><a href="#矩阵编码" class="headerlink" title="矩阵编码"></a>矩阵编码</h2><p>矩阵编码可以使得在一个嵌入修改中嵌入更多的比特，从而增加嵌入效率。</p>
 <p>下面举例说明矩阵编码的概念。</p>
 <p>用<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.33ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 572.5 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
@@ -919,9 +919,9 @@
 <li>收缩现象增加了嵌入操作对DCT系数直方图造成的影响。</li>
 </ul>
 <p>收缩造成的负面效果可以通过几种方式消除，下面介绍的-F5和nsF5就是针对收缩现象而指定的解决方法。</p>
-<h1 id="3-F5算法介绍"><a href="#3-F5算法介绍" class="headerlink" title="3. -F5算法介绍"></a>3. -F5算法介绍</h1><p>上文提到，F5的第一个设计原则，是将DCT系数的绝对值减1，这会导致收缩现象的产生。而-F5算法做的就是将减1改为加1，这样收缩现象就能避免，也就可以达到理想中的嵌入效率。</p>
+<h1 id="F5算法"><a href="#F5算法" class="headerlink" title="-F5算法"></a>-F5算法</h1><p>上文提到，F5的第一个设计原则，是将DCT系数的绝对值减1，这会导致收缩现象的产生。而-F5算法做的就是将减1改为加1，这样收缩现象就能避免，也就可以达到理想中的嵌入效率。</p>
 <p>（-F5的缺点暂时不考虑）</p>
-<h1 id="4-nsF5算法介绍"><a href="#4-nsF5算法介绍" class="headerlink" title="4. nsF5算法介绍"></a>4. nsF5算法介绍</h1><p>另一种解决方法是使用湿纸编码（Wet paper code）来减弱收缩造成的负面效果。</p>
+<h1 id="nsF5算法"><a href="#nsF5算法" class="headerlink" title="nsF5算法"></a>nsF5算法</h1><p>另一种解决方法是使用湿纸编码（Wet paper code）来减弱收缩造成的负面效果。</p>
 <p>湿纸编码的思想是假设载体像一张湿了的纸一样，存在干点（dry point）和湿点（wet point）。湿点区域无法进行任何嵌入修改操作。</p>
 <p>nsF5算法首先将置乱后的DCT系数进行分段之后，将零系数作为湿点，将非零系数作为干点进行湿纸编码。这样接收者只需要用共享的编码矩阵提取信息，而无需关心0的可能产生情况。</p>
 
@@ -954,7 +954,7 @@
   <p><span>本文标题:</span><a href="/2019/06/27/JPEG隐写术之F5、-F5和nsF5/">JPEG隐写术之F5、-F5和nsF5</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 YangDu 的个人博客">YangDu</a></p>
   <p><span>发布时间:</span>2019年06月27日 - 01:50</p>
-  <p><span>最后更新:</span>2019年06月28日 - 15:55</p>
+  <p><span>最后更新:</span>2019年07月01日 - 00:43</p>
   <p><span>原始链接:</span><a href="/2019/06/27/JPEG隐写术之F5、-F5和nsF5/" title="JPEG隐写术之F5、-F5和nsF5">http://odinaris.github.io/2019/06/27/JPEG隐写术之F5、-F5和nsF5/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://odinaris.github.io/2019/06/27/JPEG隐写术之F5、-F5和nsF5/" aria-label="复制成功！"></i></span>
   </p>
@@ -1233,7 +1233,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-参考论文"><span class="nav-number">1.</span> <span class="nav-text">1. 参考论文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-F5算法介绍"><span class="nav-number">2.</span> <span class="nav-text">2. F5算法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-嵌入特点"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 嵌入特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-矩阵编码"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 矩阵编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-F5算法介绍"><span class="nav-number">3.</span> <span class="nav-text">3. -F5算法介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-nsF5算法介绍"><span class="nav-number">4.</span> <span class="nav-text">4. nsF5算法介绍</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考论文"><span class="nav-number">1.</span> <span class="nav-text">参考论文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#F5算法介绍"><span class="nav-number">2.</span> <span class="nav-text">F5算法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌入特点"><span class="nav-number">2.1.</span> <span class="nav-text">嵌入特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵编码"><span class="nav-number">2.2.</span> <span class="nav-text">矩阵编码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#F5算法"><span class="nav-number">3.</span> <span class="nav-text">-F5算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nsF5算法"><span class="nav-number">4.</span> <span class="nav-text">nsF5算法</span></a></li></ol></div>
             
 
           </div>
@@ -1268,7 +1268,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">14k</span>
+    <span title="站点总字数">13k</span>
   
 
   

@@ -93,22 +93,22 @@
 
 
 
-  <meta name="description" content="UNIWARD是Vojtˇech Holub和Jessica Fridrich提出的一种通用失真设计方案，适用空域和JPEG域，分别用S-UNIWARD，J-UNIWARD和SI-UNIWARD表示不同域。 本文对J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。 此外，因水平有限，部分术语暂未翻译，只用了原文中的术语，见谅。">
+  <meta name="description" content="本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。">
 <meta name="keywords" content="Steganography,J-UNIWARD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JPEG隐写术之J-UNIWARD">
 <meta property="og:url" content="http://odinaris.github.io/2019/06/26/JPEG隐写术之J-UNIWARD/index.html">
-<meta property="og:site_name" content="YangDu's Research">
-<meta property="og:description" content="UNIWARD是Vojtˇech Holub和Jessica Fridrich提出的一种通用失真设计方案，适用空域和JPEG域，分别用S-UNIWARD，J-UNIWARD和SI-UNIWARD表示不同域。 本文对J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。 此外，因水平有限，部分术语暂未翻译，只用了原文中的术语，见谅。">
+<meta property="og:site_name" content="等你爱我">
+<meta property="og:description" content="本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-28T01:43:11.333Z">
+<meta property="og:updated_time" content="2019-06-30T16:42:17.347Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JPEG隐写术之J-UNIWARD">
-<meta name="twitter:description" content="UNIWARD是Vojtˇech Holub和Jessica Fridrich提出的一种通用失真设计方案，适用空域和JPEG域，分别用S-UNIWARD，J-UNIWARD和SI-UNIWARD表示不同域。 本文对J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。 此外，因水平有限，部分术语暂未翻译，只用了原文中的术语，见谅。">
+<meta name="twitter:description" content="本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。">
 
 
 
-  <link rel="alternate" href="/atom.xml" title="YangDu's Research" type="application/atom+xml">
+  <link rel="alternate" href="/atom.xml" title="等你爱我" type="application/atom+xml">
 
 
 
@@ -123,7 +123,7 @@
   };
 </script>
 
-  <title>JPEG隐写术之J-UNIWARD | YangDu's Research</title>
+  <title>JPEG隐写术之J-UNIWARD | 等你爱我</title>
   
 
 
@@ -182,7 +182,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">YangDu's Research</span>
+        <span class="site-title">等你爱我</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -410,7 +410,7 @@
     </span>
 
     <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YangDu's Research">
+      <meta itemprop="name" content="等你爱我">
     </span>
 
     
@@ -461,7 +461,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-28 09:43:11" itemprop="dateModified" datetime="2019-06-28T09:43:11+08:00">2019-06-28</time>
+                <time title="修改时间：2019-07-01 00:42:17" itemprop="dateModified" datetime="2019-07-01T00:42:17+08:00">2019-07-01</time>
               
             
           </span>
@@ -520,7 +520,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">5.4k</span>
+                <span title="本文字数">5k</span>
               
 
               
@@ -554,11 +554,9 @@
       
 
       
-        <p>UNIWARD是Vojtˇech Holub和Jessica Fridrich提出的一种通用失真设计方案，适用空域和JPEG域，分别用S-UNIWARD，J-UNIWARD和SI-UNIWARD表示不同域。</p>
-<p>本文对J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。</p>
-<p>此外，因水平有限，部分术语暂未翻译，只用了原文中的术语，见谅。</p>
+        <p>本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。</p>
 <a id="more"></a>
-<h1 id="1-参考论文"><a href="#1-参考论文" class="headerlink" title="1. 参考论文"></a>1. 参考论文</h1><div class="table-container">
+<h1 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h1><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -578,11 +576,11 @@
 </tbody>
 </table>
 </div>
-<h2 id="1-1-摘要"><a href="#1-1-摘要" class="headerlink" title="1.1. 摘要"></a>1.1. 摘要</h2><p>近几年来，最成功的隐写术是在嵌入秘密数据的同时最小化一个适合定义的失真函数。而由于一些高效实用的编码存在（能够达到逼近率失真边界的嵌入效果），对于从事隐写术的科研工作者来说，本质上唯一剩下的任务就是设计失真函数。</p>
-<p>这篇paper中提出了一种通用失真设计方案，UNIWARD（UNIversal WAvelet Relative Distortion，通用小波相对失真）。UNIWARD可以适用任何域，如空域，JPEG域还有基于边信息的JPEG域。</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>近几年来，最成功的隐写术是在嵌入秘密数据的同时最小化一个适合定义的失真函数。而由于一些高效实用的编码存在（能够达到逼近率失真边界的嵌入效果），对于从事隐写术的科研工作者来说，本质上唯一剩下的任务就是设计失真函数。</p>
+<p>这篇paper中提出了一种通用失真设计方案，UNIWARD（UNIversal WAvelet Relative Distortion，通用小波相对失真）。UNIWARD可以适用任何域，如空域（S-UNIWARD），JPEG域（J-UNIWARD）还有基于边信息的JPEG域（SI-UNIWARD）。</p>
 <p>最近的隐写分析技术，如RM（Rich Model，富模型）可以通过使用局部多项式模型来很好地拟合clean edges上的改变，因而可以有效检测出clean edges上的改变。因此嵌入算法需要能够将数据嵌入在纹理或噪声区域，这些区域从任何方向上都不容易被建模，因此难以被检测。</p>
 <p>UNIWARD的嵌入失真是<strong>载体图像的方向滤波器组分解中的系数的相对变化总和</strong>。这种方向性使得嵌入变化区域多集中在那些难以建模在多个方向的区域，如纹理和噪声区域，而避免了光滑区域或者clean edges被修改。</p>
-<h2 id="1-2-符号解释"><a href="#1-2-符号解释" class="headerlink" title="1. 2. 符号解释"></a>1. 2. 符号解释</h2><div class="table-container">
+<h2 id="符号解释"><a href="#符号解释" class="headerlink" title="符号解释"></a>符号解释</h2><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -711,7 +709,7 @@
 </table>
 </div>
 <hr>
-<h1 id="2-方向滤波器组（Directional-filter-bank）"><a href="#2-方向滤波器组（Directional-filter-bank）" class="headerlink" title="2. 方向滤波器组（Directional filter bank）"></a>2. 方向滤波器组（Directional filter bank）</h1><p>方向滤波器组包括三个线性平移不变滤波器，他们的核用<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="23.205ex" height="3.343ex" style="vertical-align: -0.838ex;" viewBox="0 -1078.4 9990.8 1439.2" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<h1 id="方向滤波器组（Directional-filter-bank）"><a href="#方向滤波器组（Directional-filter-bank）" class="headerlink" title="方向滤波器组（Directional filter bank）"></a>方向滤波器组（Directional filter bank）</h1><p>方向滤波器组包括三个线性平移不变滤波器，他们的核用<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="23.205ex" height="3.343ex" style="vertical-align: -0.838ex;" viewBox="0 -1078.4 9990.8 1439.2" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E11-MJMATHI-42" d="M231 637Q204 637 199 638T194 649Q194 676 205 682Q206 683 335 683Q594 683 608 681Q671 671 713 636T756 544Q756 480 698 429T565 360L555 357Q619 348 660 311T702 219Q702 146 630 78T453 1Q446 0 242 0Q42 0 39 2Q35 5 35 10Q35 17 37 24Q42 43 47 45Q51 46 62 46H68Q95 46 128 49Q142 52 147 61Q150 65 219 339T288 628Q288 635 231 637ZM649 544Q649 574 634 600T585 634Q578 636 493 637Q473 637 451 637T416 636H403Q388 635 384 626Q382 622 352 506Q352 503 351 500L320 374H401Q482 374 494 376Q554 386 601 434T649 544ZM595 229Q595 273 572 302T512 336Q506 337 429 337Q311 337 310 336Q310 334 293 263T258 122L240 52Q240 48 252 48T333 46Q422 46 429 47Q491 54 543 105T595 229Z"></path>
 <path stroke-width="1" id="E11-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
@@ -988,7 +986,7 @@
 </g>
 </svg></span>的第一级未抽取小波LH，HL和HH方向分解一致。<strong>滤波器只限于小波滤波器组，是因为小波表示是已知的能够为自然场景提供良好的去相关性（decorrelation）和能量紧凑化（energy compactification）</strong>。</p>
 <hr>
-<h1 id="3-失真函数（Distortion-function）"><a href="#3-失真函数（Distortion-function）" class="headerlink" title="3. 失真函数（Distortion function）"></a>3. 失真函数（Distortion function）</h1><p>对于JPEG图像来说，计算cover和stego之间的失真，首先要将JPEG文件解压到空域，即此时的<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.147ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 924.3 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<h1 id="失真函数（Distortion-function）"><a href="#失真函数（Distortion-function）" class="headerlink" title="失真函数（Distortion function）"></a>失真函数（Distortion function）</h1><p>对于JPEG图像来说，计算cover和stego之间的失真，首先要将JPEG文件解压到空域，即此时的<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.147ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 924.3 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E19-MJMATHI-58" d="M42 0H40Q26 0 26 11Q26 15 29 27Q33 41 36 43T55 46Q141 49 190 98Q200 108 306 224T411 342Q302 620 297 625Q288 636 234 637H206Q200 643 200 645T202 664Q206 677 212 683H226Q260 681 347 681Q380 681 408 681T453 682T473 682Q490 682 490 671Q490 670 488 658Q484 643 481 640T465 637Q434 634 411 620L488 426L541 485Q646 598 646 610Q646 628 622 635Q617 635 609 637Q594 637 594 648Q594 650 596 664Q600 677 606 683H618Q619 683 643 683T697 681T738 680Q828 680 837 683H845Q852 676 852 672Q850 647 840 637H824Q790 636 763 628T722 611T698 593L687 584Q687 585 592 480L505 384Q505 383 536 304T601 142T638 56Q648 47 699 46Q734 46 734 37Q734 35 732 23Q728 7 725 4T711 1Q708 1 678 1T589 2Q528 2 496 2T461 1Q444 1 444 10Q444 11 446 25Q448 35 450 39T455 44T464 46T480 47T506 54Q523 62 523 64Q522 64 476 181L429 299Q241 95 236 84Q232 76 232 72Q232 53 261 47Q262 47 267 47T273 46Q276 46 277 46T280 45T283 42T284 35Q284 26 282 19Q279 6 276 4T261 1Q258 1 243 1T201 2T142 2Q64 2 42 0Z"></path>
 </defs>
@@ -1123,7 +1121,7 @@
 </g>
 </svg></span>是一个正数标量，用于避免分母为0。从上式看出，分母越大，最终失真也就越小。也就是在cover矩阵中，更大的小波系数发生修改造成更小的失真，而这一般是发生在纹理/噪声区域以及图像边缘部分。而另一方面，如果至少一个小的小波系数发生了较大改变，都会造成很大的失真。因此，在至少一个方向上，上式的设计不鼓励嵌入修改发生在内容相对平滑（平滑也更容易被建模）的区域。</p>
 <hr>
-<h1 id="4-UNIWARD的加性近似（Addictive-approximation-of-UNIWARD）"><a href="#4-UNIWARD的加性近似（Addictive-approximation-of-UNIWARD）" class="headerlink" title="4. UNIWARD的加性近似（Addictive approximation of UNIWARD）"></a>4. UNIWARD的加性近似（Addictive approximation of UNIWARD）</h1><h2 id="4-1-为什么要使用加性近似？"><a href="#4-1-为什么要使用加性近似？" class="headerlink" title="4.1 为什么要使用加性近似？"></a>4.1 为什么要使用加性近似？</h2><p>在JPEG域中，当修改一个JPEG系数时，会同时影响一整个<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.165ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2223.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<h1 id="UNIWARD的加性近似"><a href="#UNIWARD的加性近似" class="headerlink" title="UNIWARD的加性近似"></a>UNIWARD的加性近似</h1><h2 id="为什么要使用加性近似？"><a href="#为什么要使用加性近似？" class="headerlink" title="为什么要使用加性近似？"></a>为什么要使用加性近似？</h2><p>在JPEG域中，当修改一个JPEG系数时，会同时影响一整个<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="5.165ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 2223.9 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E23-MJMAIN-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path>
 <path stroke-width="1" id="E23-MJMAIN-D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path>
@@ -1158,7 +1156,7 @@
 </svg></span>是<strong>非加性</strong>的。</p>
 <p>虽然存在一些使用非加性失真函数的嵌入方法，如Gibbs构造，但使用加性失真更容易进行嵌入。并且在UNIWARD中，相邻的嵌入修改造成的影响过于明显使得Gibbs构造的嵌入效果差强人意。UNIWARD不采用Gibbs构造的进一步解释可参考论文，这里不作过多赘述。</p>
 <p>使用加性近似的显著优点是在全局设计上的便利性。因为嵌入过程可以直接通过使用隐写术中的一个标准工具 - STC码来实现。</p>
-<h2 id="4-2-如何定义加性近似？"><a href="#4-2-如何定义加性近似？" class="headerlink" title="4.2 如何定义加性近似？"></a>4.2 如何定义加性近似？</h2><p>任何失真函数<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="8.539ex" height="2.843ex" style="vertical-align: -0.838ex;" viewBox="0 -863.1 3676.4 1223.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<h2 id="如何定义加性近似？"><a href="#如何定义加性近似？" class="headerlink" title="如何定义加性近似？"></a>如何定义加性近似？</h2><p>任何失真函数<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="8.539ex" height="2.843ex" style="vertical-align: -0.838ex;" viewBox="0 -863.1 3676.4 1223.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E26-MJMAIN-44" d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z"></path>
 <path stroke-width="1" id="E26-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path>
@@ -1654,7 +1652,7 @@
   <p><span>本文标题:</span><a href="/2019/06/26/JPEG隐写术之J-UNIWARD/">JPEG隐写术之J-UNIWARD</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 YangDu 的个人博客">YangDu</a></p>
   <p><span>发布时间:</span>2019年06月26日 - 22:39</p>
-  <p><span>最后更新:</span>2019年06月28日 - 09:43</p>
+  <p><span>最后更新:</span>2019年07月01日 - 00:42</p>
   <p><span>原始链接:</span><a href="/2019/06/26/JPEG隐写术之J-UNIWARD/" title="JPEG隐写术之J-UNIWARD">http://odinaris.github.io/2019/06/26/JPEG隐写术之J-UNIWARD/</a>
     <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://odinaris.github.io/2019/06/26/JPEG隐写术之J-UNIWARD/" aria-label="复制成功！"></i></span>
   </p>
@@ -1933,7 +1931,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-参考论文"><span class="nav-number">1.</span> <span class="nav-text">1. 参考论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-摘要"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. 摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-符号解释"><span class="nav-number">1.2.</span> <span class="nav-text">1. 2. 符号解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-方向滤波器组（Directional-filter-bank）"><span class="nav-number">2.</span> <span class="nav-text">2. 方向滤波器组（Directional filter bank）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-失真函数（Distortion-function）"><span class="nav-number">3.</span> <span class="nav-text">3. 失真函数（Distortion function）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-UNIWARD的加性近似（Addictive-approximation-of-UNIWARD）"><span class="nav-number">4.</span> <span class="nav-text">4. UNIWARD的加性近似（Addictive approximation of UNIWARD）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-为什么要使用加性近似？"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 为什么要使用加性近似？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-如何定义加性近似？"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 如何定义加性近似？</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考论文"><span class="nav-number">1.</span> <span class="nav-text">参考论文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-number">1.1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#符号解释"><span class="nav-number">1.2.</span> <span class="nav-text">符号解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方向滤波器组（Directional-filter-bank）"><span class="nav-number">2.</span> <span class="nav-text">方向滤波器组（Directional filter bank）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#失真函数（Distortion-function）"><span class="nav-number">3.</span> <span class="nav-text">失真函数（Distortion function）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UNIWARD的加性近似"><span class="nav-number">4.</span> <span class="nav-text">UNIWARD的加性近似</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要使用加性近似？"><span class="nav-number">4.1.</span> <span class="nav-text">为什么要使用加性近似？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何定义加性近似？"><span class="nav-number">4.2.</span> <span class="nav-text">如何定义加性近似？</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1968,7 +1966,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">14k</span>
+    <span title="站点总字数">13k</span>
   
 
   
