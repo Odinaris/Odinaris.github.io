@@ -154,7 +154,7 @@ template {
 body {
   position: relative;
   font-family: "Noto Serif SC", Verdana, sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 2;
   color: #555;
   background: #fff;
@@ -526,7 +526,7 @@ body {
 }
 @media (min-width: 1600px) {
   .container .header-inner {
-    width: 1080px;
+    width: 960px;
   }
 }
 .main-inner {
@@ -541,7 +541,7 @@ body {
 }
 @media (min-width: 1600px) {
   .container .main-inner {
-    width: 1080px;
+    width: 960px;
   }
 }
 .footer {
@@ -559,7 +559,7 @@ body {
 }
 @media (min-width: 1600px) {
   .container .footer-inner {
-    width: 1080px;
+    width: 960px;
   }
 }
 pre,
@@ -1320,7 +1320,7 @@ pre .javascript .function {
 .post-body .figure .caption {
   margin: -20px auto 15px;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   color: #999;
   font-weight: bold;
   line-height: 1;
@@ -1963,7 +1963,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #88ff40;
+  background: #2effff;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2775,7 +2775,7 @@ hr {
 }
 @media (max-width: 767px) {
   .posts-expand .post-body {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 .posts-expand .post-body img {
@@ -2801,7 +2801,7 @@ hr {
 }
 .post-button a {
   padding: 0;
-  font-size: 20px;
+  font-size: 18px;
   background: none;
   border: none;
   border-bottom: 2px solid #666;
@@ -2922,4 +2922,7 @@ body {
   width: 100%;
   overflow-x: auto;
   vertical-align: bottom;
+}
+#comments .vsys {
+  display: none;
 }
