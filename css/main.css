@@ -153,8 +153,8 @@ template {
 }
 body {
   position: relative;
-  font-family: "Noto Serif SC", Verdana, sans-serif;
-  font-size: 18px;
+  font-family: "PingFang SC", "Microsoft YaHei", Verdana, sans-serif;
+  font-size: 16px;
   line-height: 2;
   color: #555;
   background: #fff;
@@ -187,84 +187,84 @@ h6 {
   font-family: "Noto Serif SC";
 }
 h1 {
-  font-size: 22px;
+  font-size: 24px;
 }
 h1 code {
   font-size: 1em;
 }
 @media (max-width: 767px) {
   h1 {
-    font-size: 18px;
+    font-size: 20px;
   }
   h1 code {
     font-size: 1em;
   }
 }
 h2 {
-  font-size: 18px;
+  font-size: 22px;
 }
 h2 code {
   font-size: 1em;
 }
 @media (max-width: 767px) {
   h2 {
-    font-size: 14px;
+    font-size: 18px;
   }
   h2 code {
     font-size: 1em;
   }
 }
 h3 {
-  font-size: 14px;
+  font-size: 20px;
 }
 h3 code {
   font-size: 1em;
 }
 @media (max-width: 767px) {
   h3 {
-    font-size: 10px;
+    font-size: 16px;
   }
   h3 code {
     font-size: 1em;
   }
 }
 h4 {
-  font-size: 10px;
+  font-size: 18px;
 }
 h4 code {
   font-size: 1em;
 }
 @media (max-width: 767px) {
   h4 {
-    font-size: 6px;
+    font-size: 14px;
   }
   h4 code {
     font-size: 1em;
   }
 }
 h5 {
-  font-size: 6px;
+  font-size: 16px;
 }
 h5 code {
   font-size: 1em;
 }
 @media (max-width: 767px) {
   h5 {
-    font-size: 2px;
+    font-size: 12px;
   }
   h5 code {
     font-size: 1em;
   }
 }
 h6 {
-  font-size: 2px;
+  font-size: 14px;
 }
 h6 code {
   font-size: 1em;
 }
 @media (max-width: 767px) {
   h6 {
-    font-size: -2px;
+    font-size: 10px;
   }
   h6 code {
     font-size: 1em;
@@ -567,14 +567,14 @@ pre,
   overflow: auto;
   margin: 20px 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 14px;
   color: #4d4d4c;
   background: #f7f7f7;
   line-height: 1.6;
 }
 pre,
 code {
-  font-family: consolas, Menlo, "Noto Serif SC", monospace;
+  font-family: Monaco, consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace;
 }
 code {
   overflow-wrap: break-word;
@@ -583,7 +583,7 @@ code {
   color: #555;
   background: #eee;
   border-radius: 3px;
-  font-size: 16px;
+  font-size: 14px;
 }
 pre {
   padding: 10px;
@@ -1211,7 +1211,7 @@ pre .javascript .function {
   line-height: 36px;
   font-size: 20px;
   font-weight: normal;
-  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'EB Garamond', "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .site-subtitle {
   margin-top: 10px;
@@ -1304,7 +1304,7 @@ pre .javascript .function {
 .post-body {
   overflow-wrap: break-word;
   word-wrap: break-word;
-  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'EB Garamond', "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .post-body .exturl .fa {
   font-size: 14px;
@@ -1320,7 +1320,7 @@ pre .javascript .function {
 .post-body .figure .caption {
   margin: -20px auto 15px;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   color: #999;
   font-weight: bold;
   line-height: 1;
@@ -1567,7 +1567,7 @@ pre .javascript .function {
 .posts-expand .post-meta {
   margin: 3px 0 60px 0;
   color: #999;
-  font-family: 'EB Garamond', "Noto Serif SC", sans-serif;
+  font-family: 'EB Garamond', "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 12px;
   text-align: center;
 }
@@ -1963,7 +1963,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ddfff1;
+  background: #9aff61;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2762,12 +2762,12 @@ hr {
 }
 @media (max-width: 767px) {
   .posts-expand .post-title {
-    font-size: 20px;
+    font-size: 22px;
   }
 }
 @media (min-width: 1200px) {
   .posts-expand .post-title {
-    font-size: 28px;
+    font-size: 26px;
   }
 }
 .posts-expand .post-title:hover:before {
@@ -2775,7 +2775,7 @@ hr {
 }
 @media (max-width: 767px) {
   .posts-expand .post-body {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 .posts-expand .post-body img {
@@ -2801,7 +2801,7 @@ hr {
 }
 .post-button a {
   padding: 0;
-  font-size: 18px;
+  font-size: 16px;
   background: none;
   border: none;
   border-bottom: 2px solid #666;
