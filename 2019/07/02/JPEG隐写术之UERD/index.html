@@ -1,4 +1,583 @@
-<!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><script src="/lib/pace/pace.min.js?v=1.0.2"></script><link rel="stylesheet" href="/lib/pace/pace-theme-center-circle.min.css?v=1.0.2"><link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5"><link href="https://fonts.loli.net/css?family=Noto+Serif+SC:400,500,700&amp;display=swap&amp;subset=chinese-simplified" rel="stylesheet"><link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2"><link rel="stylesheet" href="/css/main.css?v=7.0.1"><link rel="apple-touch-icon" sizes="180x180" href="/images/yangdu.png?v=7.0.1"><link rel="icon" type="image/png" sizes="32x32" href="/images/yangdu.png?v=7.0.1"><link rel="icon" type="image/png" sizes="16x16" href="/images/yangdu.png?v=7.0.1"><link rel="mask-icon" href="/images/yangdu.png?v=7.0.1" color="#222"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Gemini",version:"7.0.1",sidebar:{position:"left",display:"hide",offset:12,onmobile:!1,dimmer:!1},back2top:!0,back2top_sidebar:!1,fancybox:!0,fastclick:!0,lazyload:!1,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><meta name="description" content="本文对JPEG隐写术中的UERD算法进行相关介绍。"><meta name="keywords" content="Steganography,UERD"><meta property="og:type" content="article"><meta property="og:title" content="JPEG隐写术之UERD"><meta property="og:url" content="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/index.html"><meta property="og:site_name" content="About My Time."><meta property="og:description" content="本文对JPEG隐写术中的UERD算法进行相关介绍。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562079670314.png"><meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562080724299.png"><meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562081309344.png"><meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562084453236.png"><meta property="og:updated_time" content="2019-07-02T17:00:29.860Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="JPEG隐写术之UERD"><meta name="twitter:description" content="本文对JPEG隐写术中的UERD算法进行相关介绍。"><meta name="twitter:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562079670314.png"><link rel="alternate" href="/atom.xml" title="About My Time." type="application/atom+xml"><link rel="canonical" href="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>JPEG隐写术之UERD | About My Time.</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">About My Time.</span><span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle">我欲因之梦吴越，一夜飞度镜湖月。</p></div><div class="site-nav-toggle"> <button aria-label="切换导航栏"><span class="btn-bar"></span><span class="btn-bar"></span><span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于我</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">8</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">4</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">7</span></a></li><li class="menu-item menu-item-message"><a href="/message" rel="section"><i class="menu-item-icon fa fa-fw fa-comment"></i><br>札记</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i></span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"> <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/"><span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><meta itemprop="name" content="YangDu"><meta itemprop="description" content="不必勉强。"><meta itemprop="image" content="/images/avatar.jpg"></span><span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization"><meta itemprop="name" content="About My Time."></span><header class="post-header"><h1 class="post-title" itemprop="name headline">JPEG隐写术之UERD</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-07-02 16:29:09" itemprop="dateCreated datePublished" datetime="2019-07-02T16:29:09+08:00">2019-07-02</time> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i></span> <span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-07-03 01:00:29" itemprop="dateModified" datetime="2019-07-03T01:00:29+08:00">2019-07-03</time></span> <span class="post-category"><span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-folder-o"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Steganography/" itemprop="url" rel="index"><span itemprop="name">Steganography</span></a></span></span><div class="post-symbolscount"><span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span> <span class="post-meta-item-text">本文字数：</span> <span title="本文字数">4.3k</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-clock-o"></i></span> <span class="post-meta-item-text">阅读时长 ≈</span> <span title="阅读时长">4 分钟</span></div></div></header><div class="post-body" itemprop="articleBody"><p>本文对JPEG隐写术中的UERD算法进行相关介绍。</p><a id="more"></a><h1 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h1><div class="table-container"><table><thead><tr><th>Title</th><th>Authors</th></tr></thead><tbody><tr><td>Using Statistical Image Model for JPEG Steganography: Uniform Embedding Revisited</td><td>Linjie Guo, Jiangqun Ni, Wenkang Su, Chengpei Tang, and Yun Qing Shi</td></tr></tbody></table></div><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UERD这篇论文主要工作可以概况为以下三点：</p><ul><li>使用了所有的DCT系数（包括DC和零AC系数在内）作为载体元素</li><li>基于DCT块和每个DCT系数的模式来构造失真函数</li><li>计算复杂度可忽略不计，更实用</li></ul><h1 id="对UED的攻讦"><a href="#对UED的攻讦" class="headerlink" title="对UED的攻讦"></a>对UED的攻讦</h1><p>UED存在的问题主要有两点：</p><p>一、对原始的均匀嵌入（UE）策略可以从信息论的视角来理解，即<strong>离散源的最大熵原理</strong>。但是对于自然图像来说，<strong>不同大小的DCT系数可容忍的相对变化是不同的</strong>。就是说，对两种值不同的系数进行相同的修改，造成的影响是不同的。</p><p>二、对修改的“均匀扩展”是否真的能够得到最佳的安全性？</p><h1 id="广义均匀嵌入策略（Generalized-Uniform-Embedding）"><a href="#广义均匀嵌入策略（Generalized-Uniform-Embedding）" class="headerlink" title="广义均匀嵌入策略（Generalized Uniform Embedding）"></a>广义均匀嵌入策略（Generalized Uniform Embedding）</h1><blockquote><p><strong>UED的核心思想是将嵌入造成的修改均匀扩散到全体DCT系数中，而UERD的核心思想是将“检测能力”均匀扩散到全体系数。</strong></p></blockquote><p>上一篇文章介绍UED时提到了变异系数这个概念。变异系数Cv在一阶二阶统计上都表现出了随系数增大而增大的特性，换句话说，就是对系数的<strong>检测能力随着系数增大会下降</strong>。</p><p>UE中采用的是<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.948ex" height="2.843ex" style="vertical-align: -0.838ex;" viewBox="0 -863.1 2130.5 1223.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<!DOCTYPE html><html class="theme-next gemini use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-center-circle.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+<link href="https://fonts.loli.net/css?family=Noto+Serif+SC:400,500,700&amp;display=swap&amp;subset=chinese-simplified" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/yangdu.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/yangdu.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/yangdu.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/yangdu.png?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"hide","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: true,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文对JPEG隐写术中的UERD算法进行相关介绍。">
+<meta name="keywords" content="Steganography,UERD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JPEG隐写术之UERD">
+<meta property="og:url" content="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/index.html">
+<meta property="og:site_name" content="About My Time.">
+<meta property="og:description" content="本文对JPEG隐写术中的UERD算法进行相关介绍。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562079670314.png">
+<meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562080724299.png">
+<meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562081309344.png">
+<meta property="og:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562084453236.png">
+<meta property="og:updated_time" content="2019-07-02T17:00:29.860Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JPEG隐写术之UERD">
+<meta name="twitter:description" content="本文对JPEG隐写术中的UERD算法进行相关介绍。">
+<meta name="twitter:image" content="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562079670314.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="About My Time." type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>JPEG隐写术之UERD | About My Time.</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">About My Time.</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">我欲因之梦吴越，一夜飞度镜湖月。</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于我</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">10</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">5</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">8</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-message">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/message" rel="section"><i class="menu-item-icon fa fa-fw fa-comment"></i> <br>札记</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    <!-- 
+ -->
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/">
+
+    <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="YangDu">
+      <meta itemprop="description" content="不必勉强。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="About My Time.">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JPEG隐写术之UERD
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-02 16:29:09" itemprop="dateCreated datePublished" datetime="2019-07-02T16:29:09+08:00">2019-07-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-03 01:00:29" itemprop="dateModified" datetime="2019-07-03T01:00:29+08:00">2019-07-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Steganography/" itemprop="url" rel="index"><span itemprop="name">Steganography</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">4.3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 ≈</span>
+                
+                <span title="阅读时长">4 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文对JPEG隐写术中的UERD算法进行相关介绍。</p>
+<a id="more"></a>
+<h1 id="参考论文"><a href="#参考论文" class="headerlink" title="参考论文"></a>参考论文</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Authors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Using Statistical Image Model for JPEG Steganography: Uniform Embedding Revisited</td>
+<td>Linjie Guo, Jiangqun Ni, Wenkang Su, Chengpei Tang, and Yun Qing Shi</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>UERD这篇论文主要工作可以概况为以下三点：</p>
+<ul>
+<li>使用了所有的DCT系数（包括DC和零AC系数在内）作为载体元素</li>
+<li>基于DCT块和每个DCT系数的模式来构造失真函数</li>
+<li>计算复杂度可忽略不计，更实用</li>
+</ul>
+<h1 id="对UED的攻讦"><a href="#对UED的攻讦" class="headerlink" title="对UED的攻讦"></a>对UED的攻讦</h1><p>UED存在的问题主要有两点：</p>
+<p>一、对原始的均匀嵌入（UE）策略可以从信息论的视角来理解，即<strong>离散源的最大熵原理</strong>。但是对于自然图像来说，<strong>不同大小的DCT系数可容忍的相对变化是不同的</strong>。就是说，对两种值不同的系数进行相同的修改，造成的影响是不同的。</p>
+<p>二、对修改的“均匀扩展”是否真的能够得到最佳的安全性？</p>
+<h1 id="广义均匀嵌入策略（Generalized-Uniform-Embedding）"><a href="#广义均匀嵌入策略（Generalized-Uniform-Embedding）" class="headerlink" title="广义均匀嵌入策略（Generalized Uniform Embedding）"></a>广义均匀嵌入策略（Generalized Uniform Embedding）</h1><blockquote>
+<p><strong>UED的核心思想是将嵌入造成的修改均匀扩散到全体DCT系数中，而UERD的核心思想是将“检测能力”均匀扩散到全体系数。</strong></p>
+</blockquote>
+<p>上一篇文章介绍UED时提到了变异系数这个概念。变异系数Cv在一阶二阶统计上都表现出了随系数增大而增大的特性，换句话说，就是对系数的<strong>检测能力随着系数增大会下降</strong>。</p>
+<p>UE中采用的是<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.948ex" height="2.843ex" style="vertical-align: -0.838ex;" viewBox="0 -863.1 2130.5 1223.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E1-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
 <path stroke-width="1" id="E1-MJMAIN-2F" d="M423 750Q432 750 438 744T444 730Q444 725 271 248T92 -240Q85 -250 75 -250Q68 -250 62 -245T56 -231Q56 -221 230 257T407 740Q411 750 423 750Z"></path>
@@ -12,7 +591,8 @@
  <use xlink:href="#E1-MJMATHI-78" x="1279" y="0"></use>
  <use xlink:href="#E1-MJMAIN-7C" x="1852" y="0"></use>
 </g>
-</svg></span>这种衡量失真的形式，目的在于使得每种系数被选择到用来修改的<strong>“概率”</strong>一样，以达到均匀嵌入的目的。但实际上，这只是不同大小的系数被选择嵌入的概率是均匀的，而非真正意义上的均匀嵌入。因为不同大小的系数进行同样的修改，检测到的影响是不同的。越大的系数进行修改造成的影响越小。</p><p>因此，更合理的选择策略实要将这种“检测能力”均匀扩散到整个系数空间中。为此，需要控制每种系数的相对变化与变异系数<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.894ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 1246 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>这种衡量失真的形式，目的在于使得每种系数被选择到用来修改的<strong>“概率”</strong>一样，以达到均匀嵌入的目的。但实际上，这只是不同大小的系数被选择嵌入的概率是均匀的，而非真正意义上的均匀嵌入。因为不同大小的系数进行同样的修改，检测到的影响是不同的。越大的系数进行修改造成的影响越小。</p>
+<p>因此，更合理的选择策略实要将这种“检测能力”均匀扩散到整个系数空间中。为此，需要控制每种系数的相对变化与变异系数<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.894ex" height="2.176ex" style="vertical-align: -0.338ex;" viewBox="0 -791.3 1246 936.9" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E2-MJMATHI-43" d="M50 252Q50 367 117 473T286 641T490 704Q580 704 633 653Q642 643 648 636T656 626L657 623Q660 623 684 649Q691 655 699 663T715 679T725 690L740 705H746Q760 705 760 698Q760 694 728 561Q692 422 692 421Q690 416 687 415T669 413H653Q647 419 647 422Q647 423 648 429T650 449T651 481Q651 552 619 605T510 659Q484 659 454 652T382 628T299 572T226 479Q194 422 175 346T156 222Q156 108 232 58Q280 24 350 24Q441 24 512 92T606 240Q610 253 612 255T628 257Q648 257 648 248Q648 243 647 239Q618 132 523 55T319 -22Q206 -22 128 53T50 252Z"></path>
 <path stroke-width="1" id="E2-MJMATHI-76" d="M173 380Q173 405 154 405Q130 405 104 376T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Q21 294 29 316T53 368T97 419T160 441Q202 441 225 417T249 361Q249 344 246 335Q246 329 231 291T200 202T182 113Q182 86 187 69Q200 26 250 26Q287 26 319 60T369 139T398 222T409 277Q409 300 401 317T383 343T365 361T357 383Q357 405 376 424T417 443Q436 443 451 425T467 367Q467 340 455 284T418 159T347 40T241 -11Q177 -11 139 22Q102 54 102 117Q102 148 110 181T151 298Q173 362 173 380Z"></path>
@@ -21,7 +601,21 @@
  <use xlink:href="#E2-MJMATHI-43" x="0" y="0"></use>
  <use xlink:href="#E2-MJMATHI-76" x="760" y="0"></use>
 </g>
-</svg></span>成比例就可。这种思想叫做广义均匀嵌入策略（Generalized Uniform Embedding）。</p><h1 id="UERD（Uniform-Embedding-Revisted-Distortion）设计"><a href="#UERD（Uniform-Embedding-Revisted-Distortion）设计" class="headerlink" title="UERD（Uniform Embedding Revisted Distortion）设计"></a>UERD（Uniform Embedding Revisted Distortion）设计</h1><p>实现广义均匀嵌入的一般做法是增加具有更大的CV的系数的嵌入几率。</p><p>因为单单比较系数并不能表示任何统计特性，因此作者研究了系数的位置对于CV的影响。而位置的影响主要包括的是AC模式和DCT块来表示。</p><p><strong>注</strong>：这里对AC模式没有进行解释，从上下文内容来看，我猜测是说AC系数在块中的位置，因为文中提到说模式00指的是DC模式，而DC的位置就是左上角也就是位于(0,0)处。下文中所有提到的AC模式，都默认按照AC系数在DCT块中的位置来理解，如AC模式10就是指位于(1,0)位置上的AC系数值得统计直方图。</p><p>首先，作者探究了不同AC模式的统计特性，统计结果表明，<strong>AC模式所处频率越高（右下角），对应的AC系数中拥有的零系数越多，对应的CV值也越低</strong>。说明这些系数被选择修改的概率越低。</p><p>然后，作者探究了具有不同纹理复杂度的块的统计特性。这里衡量纹理复杂度的方式是根据块中非零系数的个数来评判。非零系数越少，复杂度越低。文中将复杂度分级为如下四类：</p><p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562079670314.png" alt="图1. DCT块纹理复杂度分级情况"></p><p>拿第一类来说明，块中非零AC系数个数在0-8之间时，就被分类为最低的纹理复杂度水平。</p><p>统计结果表明，<strong>DCT块中零AC系数个数越多，也就是纹理复杂度越低，对应的CV值就越低</strong>，这些块被选择来修改的概率越低。</p><p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562080724299.png" alt="图2. AC模式10下的DCT系数的CV值分布情况"></p><p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562081309344.png" alt="图3. AC模式33下的DCT系数的CV值分布情况"></p><p>从图2可以看出，零AC系数的CV值在相同模式下也存在比其他非零AC系数值高的情况。而用图2和图3对比可以看出，低频AC模式下的零系数CV值是高于高频AC模式下的零系数CV值的。</p><p>结合这两种实验数据可以看出，<strong>低频AC模式下的零系数CV值高于高频AC模式下的零系数CV值，甚至高于相同模式下的非零系数CV值</strong>。而高纹理复杂度下得零系数CV值比低纹理复杂度下的要高很多，甚至比低纹理复杂度下的其他非零系数CV值都要高。</p><p>这两种情况都证明了<strong>确实存在有比一些非零AC系数更适合嵌入的零AC系数</strong>。</p><p>基于以上发现，作者定义了均匀嵌入重访失真（Uniform Embedding Revisted Distortion）函数<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.679ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1153.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>成比例就可。这种思想叫做广义均匀嵌入策略（Generalized Uniform Embedding）。</p>
+<h1 id="UERD（Uniform-Embedding-Revisted-Distortion）设计"><a href="#UERD（Uniform-Embedding-Revisted-Distortion）设计" class="headerlink" title="UERD（Uniform Embedding Revisted Distortion）设计"></a>UERD（Uniform Embedding Revisted Distortion）设计</h1><p>实现广义均匀嵌入的一般做法是增加具有更大的CV的系数的嵌入几率。</p>
+<p>因为单单比较系数并不能表示任何统计特性，因此作者研究了系数的位置对于CV的影响。而位置的影响主要包括的是AC模式和DCT块来表示。</p>
+<p><strong>注</strong>：这里对AC模式没有进行解释，从上下文内容来看，我猜测是说AC系数在块中的位置，因为文中提到说模式00指的是DC模式，而DC的位置就是左上角也就是位于(0,0)处。下文中所有提到的AC模式，都默认按照AC系数在DCT块中的位置来理解，如AC模式10就是指位于(1,0)位置上的AC系数值得统计直方图。</p>
+<p>首先，作者探究了不同AC模式的统计特性，统计结果表明，<strong>AC模式所处频率越高（右下角），对应的AC系数中拥有的零系数越多，对应的CV值也越低</strong>。说明这些系数被选择修改的概率越低。</p>
+<p>然后，作者探究了具有不同纹理复杂度的块的统计特性。这里衡量纹理复杂度的方式是根据块中非零系数的个数来评判。非零系数越少，复杂度越低。文中将复杂度分级为如下四类：</p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562079670314.png" alt="图1. DCT块纹理复杂度分级情况"></p>
+<p>拿第一类来说明，块中非零AC系数个数在0-8之间时，就被分类为最低的纹理复杂度水平。</p>
+<p>统计结果表明，<strong>DCT块中零AC系数个数越多，也就是纹理复杂度越低，对应的CV值就越低</strong>，这些块被选择来修改的概率越低。</p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562080724299.png" alt="图2. AC模式10下的DCT系数的CV值分布情况"></p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562081309344.png" alt="图3. AC模式33下的DCT系数的CV值分布情况"></p>
+<p>从图2可以看出，零AC系数的CV值在相同模式下也存在比其他非零AC系数值高的情况。而用图2和图3对比可以看出，低频AC模式下的零系数CV值是高于高频AC模式下的零系数CV值的。</p>
+<p>结合这两种实验数据可以看出，<strong>低频AC模式下的零系数CV值高于高频AC模式下的零系数CV值，甚至高于相同模式下的非零系数CV值</strong>。而高纹理复杂度下得零系数CV值比低纹理复杂度下的要高很多，甚至比低纹理复杂度下的其他非零系数CV值都要高。</p>
+<p>这两种情况都证明了<strong>确实存在有比一些非零AC系数更适合嵌入的零AC系数</strong>。</p>
+<p>基于以上发现，作者定义了均匀嵌入重访失真（Uniform Embedding Revisted Distortion）函数<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.679ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1153.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E3-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path>
 <path stroke-width="1" id="E3-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
@@ -34,7 +628,8 @@
  <use transform="scale(0.707)" xlink:href="#E3-MJMATHI-6A" x="345" y="0"></use>
 </g>
 </g>
-</svg></span>。</p><p>用<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.807ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1208.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>。</p>
+<p>用<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.807ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1208.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E4-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
 <path stroke-width="1" id="E4-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
@@ -75,18 +670,32 @@
  <use transform="scale(0.707)" xlink:href="#E6-MJMATHI-6A" x="345" y="0"></use>
 </g>
 </g>
-</svg></span>定义如下：</p><script type="math/tex;mode=display">\rho_{ij}=\rho_{ij,mode}\cdot \rho_{ij,block}</script><p>其中<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.002ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 3014.9 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>定义如下：</p>
+<span class="mjpage mjpage__block"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="21.157ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 9109.2 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E7-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path>
 <path stroke-width="1" id="E7-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
 <path stroke-width="1" id="E7-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
+<path stroke-width="1" id="E7-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
 <path stroke-width="1" id="E7-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
 <path stroke-width="1" id="E7-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
 <path stroke-width="1" id="E7-MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path>
 <path stroke-width="1" id="E7-MJMATHI-64" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path>
 <path stroke-width="1" id="E7-MJMATHI-65" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path>
+<path stroke-width="1" id="E7-MJMAIN-22C5" d="M78 250Q78 274 95 292T138 310Q162 310 180 294T199 251Q199 226 182 208T139 190T96 207T78 250Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-62" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-63" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path>
+<path stroke-width="1" id="E7-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E7-MJMATHI-3C1" x="0" y="0"></use>
+<g transform="translate(517,-150)">
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-69" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-6A" x="345" y="0"></use>
+</g>
+ <use xlink:href="#E7-MJMAIN-3D" x="1431" y="0"></use>
+<g transform="translate(2487,0)">
  <use xlink:href="#E7-MJMATHI-3C1" x="0" y="0"></use>
 <g transform="translate(517,-150)">
  <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-69" x="0" y="0"></use>
@@ -98,17 +707,31 @@
  <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-65" x="2924" y="0"></use>
 </g>
 </g>
-</svg></span>和<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.698ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 2883.8 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+ <use xlink:href="#E7-MJMAIN-22C5" x="5724" y="0"></use>
+<g transform="translate(6225,0)">
+ <use xlink:href="#E7-MJMATHI-3C1" x="0" y="0"></use>
+<g transform="translate(517,-150)">
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-69" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-6A" x="345" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMAIN-2C" x="758" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-62" x="1036" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-6C" x="1465" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-6F" x="1764" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-63" x="2249" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E7-MJMATHI-6B" x="2683" y="0"></use>
+</g>
+</g>
+</g>
+</svg></span><p>其中<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.002ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 3014.9 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E8-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path>
 <path stroke-width="1" id="E8-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
 <path stroke-width="1" id="E8-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
 <path stroke-width="1" id="E8-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
-<path stroke-width="1" id="E8-MJMATHI-62" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path>
-<path stroke-width="1" id="E8-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
+<path stroke-width="1" id="E8-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
 <path stroke-width="1" id="E8-MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path>
-<path stroke-width="1" id="E8-MJMATHI-63" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path>
-<path stroke-width="1" id="E8-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
+<path stroke-width="1" id="E8-MJMATHI-64" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path>
+<path stroke-width="1" id="E8-MJMATHI-65" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
  <use xlink:href="#E8-MJMATHI-3C1" x="0" y="0"></use>
@@ -116,27 +739,38 @@
  <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-69" x="0" y="0"></use>
  <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-6A" x="345" y="0"></use>
  <use transform="scale(0.707)" xlink:href="#E8-MJMAIN-2C" x="758" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-62" x="1036" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-6C" x="1465" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-6F" x="1764" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-63" x="2249" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-6B" x="2683" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-6D" x="1036" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-6F" x="1915" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-64" x="2400" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E8-MJMATHI-65" x="2924" y="0"></use>
+</g>
+</g>
+</svg></span>和<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="6.698ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 2883.8 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="1" id="E9-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
+<path stroke-width="1" id="E9-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-62" d="M73 647Q73 657 77 670T89 683Q90 683 161 688T234 694Q246 694 246 685T212 542Q204 508 195 472T180 418L176 399Q176 396 182 402Q231 442 283 442Q345 442 383 396T422 280Q422 169 343 79T173 -11Q123 -11 82 27T40 150V159Q40 180 48 217T97 414Q147 611 147 623T109 637Q104 637 101 637H96Q86 637 83 637T76 640T73 647ZM336 325V331Q336 405 275 405Q258 405 240 397T207 376T181 352T163 330L157 322L136 236Q114 150 114 114Q114 66 138 42Q154 26 178 26Q211 26 245 58Q270 81 285 114T318 219Q336 291 336 325Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-6F" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-63" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"></path>
+<path stroke-width="1" id="E9-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E9-MJMATHI-3C1" x="0" y="0"></use>
+<g transform="translate(517,-150)">
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-69" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-6A" x="345" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMAIN-2C" x="758" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-62" x="1036" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-6C" x="1465" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-6F" x="1764" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-63" x="2249" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-6B" x="2683" y="0"></use>
 </g>
 </g>
 </svg></span>分别对应于AC模式和DCT块的失真度量。这两个度量的选择有很多种。作者在论文里将AC模式的失真度量定义为对应位置上的量化步长。而DCT块的失真度量定义为<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.807ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1208.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<path stroke-width="1" id="E9-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
-<path stroke-width="1" id="E9-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
-<path stroke-width="1" id="E9-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
-</defs>
-<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E9-MJMATHI-78" x="0" y="0"></use>
-<g transform="translate(572,-150)">
- <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-69" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E9-MJMATHI-6A" x="345" y="0"></use>
-</g>
-</g>
-</svg></span>所属块以及相邻块的能量函数。 假设<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.807ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1208.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <path stroke-width="1" id="E10-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
 <path stroke-width="1" id="E10-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
@@ -149,226 +783,852 @@
  <use transform="scale(0.707)" xlink:href="#E10-MJMATHI-6A" x="345" y="0"></use>
 </g>
 </g>
-</svg></span>处在第<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.435ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 1479 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>所属块以及相邻块的能量函数。 假设<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.807ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1208.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E11-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
-<path stroke-width="1" id="E11-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E11-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
+<path stroke-width="1" id="E11-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E11-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E11-MJMATHI-6D" x="0" y="0"></use>
- <use xlink:href="#E11-MJMATHI-6E" x="878" y="0"></use>
+ <use xlink:href="#E11-MJMATHI-78" x="0" y="0"></use>
+<g transform="translate(572,-150)">
+ <use transform="scale(0.707)" xlink:href="#E11-MJMATHI-69" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E11-MJMATHI-6A" x="345" y="0"></use>
 </g>
-</svg></span>块中，那么它的块能量<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.586ex" height="2.509ex" style="vertical-align: -0.671ex;" viewBox="0 -791.3 1974.3 1080.4" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</g>
+</svg></span>处在第<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.435ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 1479 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E12-MJMATHI-44" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path>
 <path stroke-width="1" id="E12-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
 <path stroke-width="1" id="E12-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E12-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E12-MJMATHI-6D" x="0" y="0"></use>
+ <use xlink:href="#E12-MJMATHI-6E" x="878" y="0"></use>
+</g>
+</svg></span>块中，那么它的块能量<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="4.586ex" height="2.509ex" style="vertical-align: -0.671ex;" viewBox="0 -791.3 1974.3 1080.4" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="1" id="E13-MJMATHI-44" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path>
+<path stroke-width="1" id="E13-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E13-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E13-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-150)">
- <use transform="scale(0.707)" xlink:href="#E12-MJMATHI-6D" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E12-MJMATHI-6E" x="878" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E13-MJMATHI-6D" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E13-MJMATHI-6E" x="878" y="0"></use>
 </g>
 </g>
-</svg></span>定义如下：</p><script type="math/tex;mode=display">D_{mn}=\sum^7_{k=0}\sum^7_{l=0}|x_{kl}|\cdot q_{kl}</script><p>其中<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.909ex" height="2.009ex" style="vertical-align: -0.671ex;" viewBox="0 -576.1 1252.3 865.1" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>定义如下：</p>
+<span class="mjpage mjpage__block"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="23.666ex" height="7.509ex" style="vertical-align: -3.171ex;" viewBox="0 -1867.7 10189.3 3233.2" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E13-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
-<path stroke-width="1" id="E13-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
-<path stroke-width="1" id="E13-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
-</defs>
-<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E13-MJMATHI-78" x="0" y="0"></use>
-<g transform="translate(572,-150)">
- <use transform="scale(0.707)" xlink:href="#E13-MJMATHI-6B" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E13-MJMATHI-6C" x="521" y="0"></use>
-</g>
-</g>
-</svg></span>表示的是块中对应位置上的系数值，并且设<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.467ex" height="2.509ex" style="vertical-align: -0.671ex;" viewBox="0 -791.3 3214.9 1080.4" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<path stroke-width="1" id="E14-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
-<path stroke-width="1" id="E14-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-44" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
 <path stroke-width="1" id="E14-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="1" id="E14-MJSZ2-2211" d="M60 948Q63 950 665 950H1267L1325 815Q1384 677 1388 669H1348L1341 683Q1320 724 1285 761Q1235 809 1174 838T1033 881T882 898T699 902H574H543H251L259 891Q722 258 724 252Q725 250 724 246Q721 243 460 -56L196 -356Q196 -357 407 -357Q459 -357 548 -357T676 -358Q812 -358 896 -353T1063 -332T1204 -283T1307 -196Q1328 -170 1348 -124H1388Q1388 -125 1381 -145T1356 -210T1325 -294L1267 -449L666 -450Q64 -450 61 -448Q55 -446 55 -439Q55 -437 57 -433L590 177Q590 178 557 222T452 366T322 544L56 909L55 924Q55 945 60 948Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
+<path stroke-width="1" id="E14-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E14-MJMAIN-37" d="M55 458Q56 460 72 567L88 674Q88 676 108 676H128V672Q128 662 143 655T195 646T364 644H485V605L417 512Q408 500 387 472T360 435T339 403T319 367T305 330T292 284T284 230T278 162T275 80Q275 66 275 52T274 28V19Q270 2 255 -10T221 -22Q210 -22 200 -19T179 0T168 40Q168 198 265 368Q285 400 349 489L395 552H302Q128 552 119 546Q113 543 108 522T98 479L95 458V455H55V458Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
+<path stroke-width="1" id="E14-MJMAIN-7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
+<path stroke-width="1" id="E14-MJMAIN-22C5" d="M78 250Q78 274 95 292T138 310Q162 310 180 294T199 251Q199 226 182 208T139 190T96 207T78 250Z"></path>
+<path stroke-width="1" id="E14-MJMATHI-71" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E14-MJMATHI-44" x="0" y="0"></use>
+<g transform="translate(828,-150)">
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6D" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6E" x="878" y="0"></use>
+</g>
+ <use xlink:href="#E14-MJMAIN-3D" x="2252" y="0"></use>
+<g transform="translate(3308,0)">
+ <use xlink:href="#E14-MJSZ2-2211" x="0" y="0"></use>
+<g transform="translate(85,-1110)">
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6B" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-3D" x="521" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-30" x="1300" y="0"></use>
+</g>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-37" x="771" y="1627"></use>
+</g>
+<g transform="translate(4919,0)">
+ <use xlink:href="#E14-MJSZ2-2211" x="0" y="0"></use>
+<g transform="translate(164,-1110)">
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6C" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-3D" x="298" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-30" x="1077" y="0"></use>
+</g>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-37" x="771" y="1627"></use>
+</g>
+ <use xlink:href="#E14-MJMAIN-7C" x="6530" y="0"></use>
+<g transform="translate(6809,0)">
  <use xlink:href="#E14-MJMATHI-78" x="0" y="0"></use>
 <g transform="translate(572,-150)">
- <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-30"></use>
- <use transform="scale(0.707)" xlink:href="#E14-MJMAIN-30" x="500" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6B" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6C" x="521" y="0"></use>
 </g>
- <use xlink:href="#E14-MJMAIN-3D" x="1658" y="0"></use>
- <use xlink:href="#E14-MJMAIN-30" x="2714" y="0"></use>
 </g>
-</svg></span>来避免DC系数造成的影响，<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.616ex" height="2.009ex" style="vertical-align: -0.671ex;" viewBox="0 -576.1 1126.3 865.1" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+ <use xlink:href="#E14-MJMAIN-7C" x="8061" y="0"></use>
+ <use xlink:href="#E14-MJMAIN-22C5" x="8562" y="0"></use>
+<g transform="translate(9062,0)">
+ <use xlink:href="#E14-MJMATHI-71" x="0" y="0"></use>
+<g transform="translate(446,-150)">
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6B" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E14-MJMATHI-6C" x="521" y="0"></use>
+</g>
+</g>
+</g>
+</svg></span><p>其中<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.909ex" height="2.009ex" style="vertical-align: -0.671ex;" viewBox="0 -576.1 1252.3 865.1" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E15-MJMATHI-71" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path>
+<path stroke-width="1" id="E15-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
 <path stroke-width="1" id="E15-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
 <path stroke-width="1" id="E15-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E15-MJMATHI-71" x="0" y="0"></use>
-<g transform="translate(446,-150)">
+ <use xlink:href="#E15-MJMATHI-78" x="0" y="0"></use>
+<g transform="translate(572,-150)">
  <use transform="scale(0.707)" xlink:href="#E15-MJMATHI-6B" x="0" y="0"></use>
  <use transform="scale(0.707)" xlink:href="#E15-MJMATHI-6C" x="521" y="0"></use>
 </g>
 </g>
-</svg></span>就是对应位置上的量化步长。</p><p>最终<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.679ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1153.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>表示的是块中对应位置上的系数值，并且设<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="7.467ex" height="2.509ex" style="vertical-align: -0.671ex;" viewBox="0 -791.3 3214.9 1080.4" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E16-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path>
-<path stroke-width="1" id="E16-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
-<path stroke-width="1" id="E16-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
+<path stroke-width="1" id="E16-MJMATHI-78" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path>
+<path stroke-width="1" id="E16-MJMAIN-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+<path stroke-width="1" id="E16-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E16-MJMATHI-3C1" x="0" y="0"></use>
+ <use xlink:href="#E16-MJMATHI-78" x="0" y="0"></use>
+<g transform="translate(572,-150)">
+ <use transform="scale(0.707)" xlink:href="#E16-MJMAIN-30"></use>
+ <use transform="scale(0.707)" xlink:href="#E16-MJMAIN-30" x="500" y="0"></use>
+</g>
+ <use xlink:href="#E16-MJMAIN-3D" x="1658" y="0"></use>
+ <use xlink:href="#E16-MJMAIN-30" x="2714" y="0"></use>
+</g>
+</svg></span>来避免DC系数造成的影响，<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.616ex" height="2.009ex" style="vertical-align: -0.671ex;" viewBox="0 -576.1 1126.3 865.1" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="1" id="E17-MJMATHI-71" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"></path>
+<path stroke-width="1" id="E17-MJMATHI-6B" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path>
+<path stroke-width="1" id="E17-MJMATHI-6C" d="M117 59Q117 26 142 26Q179 26 205 131Q211 151 215 152Q217 153 225 153H229Q238 153 241 153T246 151T248 144Q247 138 245 128T234 90T214 43T183 6T137 -11Q101 -11 70 11T38 85Q38 97 39 102L104 360Q167 615 167 623Q167 626 166 628T162 632T157 634T149 635T141 636T132 637T122 637Q112 637 109 637T101 638T95 641T94 647Q94 649 96 661Q101 680 107 682T179 688Q194 689 213 690T243 693T254 694Q266 694 266 686Q266 675 193 386T118 83Q118 81 118 75T117 65V59Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E17-MJMATHI-71" x="0" y="0"></use>
+<g transform="translate(446,-150)">
+ <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6B" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6C" x="521" y="0"></use>
+</g>
+</g>
+</svg></span>就是对应位置上的量化步长。</p>
+<p>最终<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="2.679ex" height="2.343ex" style="vertical-align: -1.005ex;" viewBox="0 -576.1 1153.5 1008.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="1" id="E18-MJMATHI-3C1" d="M58 -216Q25 -216 23 -186Q23 -176 73 26T127 234Q143 289 182 341Q252 427 341 441Q343 441 349 441T359 442Q432 442 471 394T510 276Q510 219 486 165T425 74T345 13T266 -10H255H248Q197 -10 165 35L160 41L133 -71Q108 -168 104 -181T92 -202Q76 -216 58 -216ZM424 322Q424 359 407 382T357 405Q322 405 287 376T231 300Q217 269 193 170L176 102Q193 26 260 26Q298 26 334 62Q367 92 389 158T418 266T424 322Z"></path>
+<path stroke-width="1" id="E18-MJMATHI-69" d="M184 600Q184 624 203 642T247 661Q265 661 277 649T290 619Q290 596 270 577T226 557Q211 557 198 567T184 600ZM21 287Q21 295 30 318T54 369T98 420T158 442Q197 442 223 419T250 357Q250 340 236 301T196 196T154 83Q149 61 149 51Q149 26 166 26Q175 26 185 29T208 43T235 78T260 137Q263 149 265 151T282 153Q302 153 302 143Q302 135 293 112T268 61T223 11T161 -11Q129 -11 102 10T74 74Q74 91 79 106T122 220Q160 321 166 341T173 380Q173 404 156 404H154Q124 404 99 371T61 287Q60 286 59 284T58 281T56 279T53 278T49 278T41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E18-MJMATHI-6A" d="M297 596Q297 627 318 644T361 661Q378 661 389 651T403 623Q403 595 384 576T340 557Q322 557 310 567T297 596ZM288 376Q288 405 262 405Q240 405 220 393T185 362T161 325T144 293L137 279Q135 278 121 278H107Q101 284 101 286T105 299Q126 348 164 391T252 441Q253 441 260 441T272 442Q296 441 316 432Q341 418 354 401T367 348V332L318 133Q267 -67 264 -75Q246 -125 194 -164T75 -204Q25 -204 7 -183T-12 -137Q-12 -110 7 -91T53 -71Q70 -71 82 -81T95 -112Q95 -148 63 -167Q69 -168 77 -168Q111 -168 139 -140T182 -74L193 -32Q204 11 219 72T251 197T278 308T289 365Q289 372 288 376Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+ <use xlink:href="#E18-MJMATHI-3C1" x="0" y="0"></use>
 <g transform="translate(517,-150)">
- <use transform="scale(0.707)" xlink:href="#E16-MJMATHI-69" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E16-MJMATHI-6A" x="345" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E18-MJMATHI-69" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E18-MJMATHI-6A" x="345" y="0"></use>
 </g>
 </g>
-</svg></span>就可以表示如下:</p><p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562084453236.png" alt="UERD失真计算公式"></p><p>（公式有点复杂，不想写latex公式了，偷个懒，哈哈）</p><p>其中<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="91.828ex" height="3.676ex" style="vertical-align: -1.171ex;" viewBox="0 -1078.4 39536.9 1582.7" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span>就可以表示如下:</p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UERD/1562084453236.png" alt="UERD失真计算公式"></p>
+<p>（公式有点复杂，不想写latex公式了，偷个懒，哈哈）</p>
+<p>其中<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="91.828ex" height="3.676ex" style="vertical-align: -1.171ex;" viewBox="0 -1078.4 39536.9 1582.7" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E17-MJMATHI-44" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-7B" d="M434 -231Q434 -244 428 -250H410Q281 -250 230 -184Q225 -177 222 -172T217 -161T213 -148T211 -133T210 -111T209 -84T209 -47T209 0Q209 21 209 53Q208 142 204 153Q203 154 203 155Q189 191 153 211T82 231Q71 231 68 234T65 250T68 266T82 269Q116 269 152 289T203 345Q208 356 208 377T209 529V579Q209 634 215 656T244 698Q270 724 324 740Q361 748 377 749Q379 749 390 749T408 750H428Q434 744 434 732Q434 719 431 716Q429 713 415 713Q362 710 332 689T296 647Q291 634 291 499V417Q291 370 288 353T271 314Q240 271 184 255L170 250L184 245Q202 239 220 230T262 196T290 137Q291 131 291 1Q291 -134 296 -147Q306 -174 339 -192T415 -213Q429 -213 431 -216Q434 -219 434 -231Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path>
-<path stroke-width="1" id="E17-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path>
-<path stroke-width="1" id="E17-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path>
-<path stroke-width="1" id="E17-MJMAIN-7D" d="M65 731Q65 745 68 747T88 750Q171 750 216 725T279 670Q288 649 289 635T291 501Q292 362 293 357Q306 312 345 291T417 269Q428 269 431 266T434 250T431 234T417 231Q380 231 345 210T298 157Q293 143 292 121T291 -28V-79Q291 -134 285 -156T256 -198Q202 -250 89 -250Q71 -250 68 -247T65 -230Q65 -224 65 -223T66 -218T69 -214T77 -213Q91 -213 108 -210T146 -200T183 -177T207 -139Q208 -134 209 3L210 139Q223 196 280 230Q315 247 330 250Q305 257 280 270Q225 304 212 352L210 362L209 498Q208 635 207 640Q195 680 154 696T77 713Q68 713 67 716T65 731Z"></path>
+<path stroke-width="1" id="E19-MJMATHI-44" d="M287 628Q287 635 230 637Q207 637 200 638T193 647Q193 655 197 667T204 682Q206 683 403 683Q570 682 590 682T630 676Q702 659 752 597T803 431Q803 275 696 151T444 3L430 1L236 0H125H72Q48 0 41 2T33 11Q33 13 36 25Q40 41 44 43T67 46Q94 46 127 49Q141 52 146 61Q149 65 218 339T287 628ZM703 469Q703 507 692 537T666 584T629 613T590 629T555 636Q553 636 541 636T512 636T479 637H436Q392 637 386 627Q384 623 313 339T242 52Q242 48 253 48T330 47Q335 47 349 47T373 46Q499 46 581 128Q617 164 640 212T683 339T703 469Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-5E" d="M112 560L249 694L257 686Q387 562 387 560L361 531Q359 532 303 581L250 627L195 580Q182 569 169 557T148 538L140 532Q138 530 125 546L112 560Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-7B" d="M434 -231Q434 -244 428 -250H410Q281 -250 230 -184Q225 -177 222 -172T217 -161T213 -148T211 -133T210 -111T209 -84T209 -47T209 0Q209 21 209 53Q208 142 204 153Q203 154 203 155Q189 191 153 211T82 231Q71 231 68 234T65 250T68 266T82 269Q116 269 152 289T203 345Q208 356 208 377T209 529V579Q209 634 215 656T244 698Q270 724 324 740Q361 748 377 749Q379 749 390 749T408 750H428Q434 744 434 732Q434 719 431 716Q429 713 415 713Q362 710 332 689T296 647Q291 634 291 499V417Q291 370 288 353T271 314Q240 271 184 255L170 250L184 245Q202 239 220 230T262 196T290 137Q291 131 291 1Q291 -134 296 -147Q306 -174 339 -192T415 -213Q429 -213 431 -216Q434 -219 434 -231Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path>
+<path stroke-width="1" id="E19-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path>
+<path stroke-width="1" id="E19-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-2C" d="M78 35T78 60T94 103T137 121Q165 121 187 96T210 8Q210 -27 201 -60T180 -117T154 -158T130 -185T117 -194Q113 -194 104 -185T95 -172Q95 -168 106 -156T131 -126T157 -76T173 -3V9L172 8Q170 7 167 6T161 3T152 1T140 0Q113 0 96 17Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path>
+<path stroke-width="1" id="E19-MJMAIN-7D" d="M65 731Q65 745 68 747T88 750Q171 750 216 725T279 670Q288 649 289 635T291 501Q292 362 293 357Q306 312 345 291T417 269Q428 269 431 266T434 250T431 234T417 231Q380 231 345 210T298 157Q293 143 292 121T291 -28V-79Q291 -134 285 -156T256 -198Q202 -250 89 -250Q71 -250 68 -247T65 -230Q65 -224 65 -223T66 -218T69 -214T77 -213Q91 -213 108 -210T146 -200T183 -177T207 -139Q208 -134 209 3L210 139Q223 196 280 230Q315 247 330 250Q305 257 280 270Q225 304 212 352L210 362L209 498Q208 635 207 640Q195 680 154 696T77 713Q68 713 67 716T65 731Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
- <use xlink:href="#E17-MJMAIN-5E" x="219" y="261"></use>
- <use xlink:href="#E17-MJMAIN-3D" x="1106" y="0"></use>
- <use xlink:href="#E17-MJMAIN-7B" x="2162" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-5E" x="219" y="261"></use>
+ <use xlink:href="#E19-MJMAIN-3D" x="1106" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-7B" x="2162" y="0"></use>
 <g transform="translate(2663,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="389" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2212" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2046" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="2547" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="2936" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="3326" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2212" x="3926" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="4705" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="5205" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="389" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2212" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2046" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="2547" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="2936" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="3326" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2212" x="3926" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="4705" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="5205" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="7547" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="7547" y="0"></use>
 <g transform="translate(7992,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="389" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2212" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2046" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="2547" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="2936" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="389" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2212" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2046" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="2547" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="2936" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="11422" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="11422" y="0"></use>
 <g transform="translate(11867,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="389" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2212" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2046" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="2547" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="2936" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="3326" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2B" x="3926" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="4705" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="5205" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="389" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2212" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2046" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="2547" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="2936" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="3326" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2B" x="3926" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="4705" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="5205" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="16752" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="16752" y="0"></use>
 <g transform="translate(17197,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="878" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2212" x="1868" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2647" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="3147" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="878" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2212" x="1868" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2647" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="3147" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="20627" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="20627" y="0"></use>
 <g transform="translate(21072,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="878" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2B" x="1868" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2647" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="3147" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="878" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2B" x="1868" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2647" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="3147" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="24501" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="24501" y="0"></use>
 <g transform="translate(24947,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="389" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2B" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2046" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="2547" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="2936" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="3326" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2212" x="3926" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="4705" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="5205" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="389" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2B" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2046" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="2547" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="2936" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="3326" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2212" x="3926" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="4705" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="5205" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="29831" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="29831" y="0"></use>
 <g transform="translate(30276,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="389" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2B" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2046" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="2547" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="2936" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="389" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2B" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2046" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="2547" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="2936" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-2C" x="33706" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-2C" x="33706" y="0"></use>
 <g transform="translate(34151,0)">
- <use xlink:href="#E17-MJMATHI-44" x="0" y="0"></use>
+ <use xlink:href="#E19-MJMATHI-44" x="0" y="0"></use>
 <g transform="translate(828,-187)">
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="0" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6D" x="389" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2B" x="1268" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="2046" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="2547" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-28" x="2936" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMATHI-6E" x="3326" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-2B" x="3926" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-31" x="4705" y="0"></use>
- <use transform="scale(0.707)" xlink:href="#E17-MJMAIN-29" x="5205" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="0" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6D" x="389" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2B" x="1268" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="2046" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="2547" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-28" x="2936" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMATHI-6E" x="3326" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-2B" x="3926" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-31" x="4705" y="0"></use>
+ <use transform="scale(0.707)" xlink:href="#E19-MJMAIN-29" x="5205" y="0"></use>
 </g>
 </g>
- <use xlink:href="#E17-MJMAIN-7D" x="39036" y="0"></use>
+ <use xlink:href="#E19-MJMAIN-7D" x="39036" y="0"></use>
 </g>
-</svg></span></p><p>是第<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.435ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 1479 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+</svg></span></p>
+<p>是第<span class="mjpage"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="3.435ex" height="1.676ex" style="vertical-align: -0.338ex;" viewBox="0 -576.1 1479 721.6" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
 <defs>
-<path stroke-width="1" id="E18-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
-<path stroke-width="1" id="E18-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E20-MJMATHI-6D" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"></path>
+<path stroke-width="1" id="E20-MJMATHI-6E" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path>
 </defs>
 <g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
- <use xlink:href="#E18-MJMATHI-6D" x="0" y="0"></use>
- <use xlink:href="#E18-MJMATHI-6E" x="878" y="0"></use>
+ <use xlink:href="#E20-MJMATHI-6D" x="0" y="0"></use>
+ <use xlink:href="#E20-MJMATHI-6E" x="878" y="0"></use>
 </g>
-</svg></span>个块的相邻八个块的块能量。</p><p>考虑到DC系数的统计特性与AC系数有很大不同，这里作者启发式地将DC系数的失真定义为相邻的AC系数的均值。</p><h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>UERD的介绍到此为止，最近调研文献时又发现了一篇18年的TCSVT，文章是对UERD进行的进一步改进，还是他们课题组的。具体没有细看，等有机会阅读完之后再决定是否介绍那一篇吧。</p></div><div><div style="text-align:center;color:#ccc;font-size:14px"> ------ 本文结束<i class="fa fa-paw"></i>江湖再见 ------</div></div><div class="my_post_copyright"><script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script><script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script><script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script><p><span>本文标题:</span><a href="/2019/07/02/JPEG隐写术之UERD/">JPEG隐写术之UERD</a></p><p><span>文章作者:</span><a href="/" title="访问 YangDu 的个人博客">YangDu</a></p><p><span>发布时间:</span>2019年07月02日 - 16:29</p><p><span>最后更新:</span>2019年07月03日 - 01:00</p><p><span>原始链接:</span><a href="/2019/07/02/JPEG隐写术之UERD/" title="JPEG隐写术之UERD">http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/</a><span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/" aria-label="复制成功！"></i></span></p><p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p></div><script>var clipboard=new Clipboard(".fa-clipboard");$(".fa-clipboard").click(function(){clipboard.on("success",function(){swal({title:"",text:"复制成功",icon:"success",showConfirmButton:!0})})})</script><footer class="post-footer"><div class="post-tags"><a href="/tags/Steganography/" rel="tag"><i class="fa fa-tag"></i> Steganography</a><a href="/tags/UERD/" rel="tag"><i class="fa fa-tag"></i> UERD</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/2019/07/01/JPEG隐写术之UED/" rel="next" title="JPEG隐写术之UED"><i class="fa fa-chevron-left"></i> JPEG隐写术之UED</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></div></article></div></div><div class="comments" id="gitalk-container"></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span><span class="sidebar-toggle-line sidebar-toggle-line-middle"></span><span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap"> 文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap"> 站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person"> <a href="/"><img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="YangDu"></a><p class="site-author-name" itemprop="name">YangDu</p><div class="site-description motion-element" itemprop="description">不必勉强。</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"> <a href="/archives/"><span class="site-state-item-count">7</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"> <a href="/categories/"><span class="site-state-item-count">4</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"> <a href="/tags/"><span class="site-state-item-count">8</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="chat motion-element"><i class="fa fa-comment"></i> Chat</div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/Odinaris" title="GitHub → https://github.com/Odinaris" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i> GitHub</a></span><span class="links-of-author-item"><a href="mailto:Odinaris@foxmail.com" title="E-Mail → mailto:Odinaris@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i> E-Mail</a></span></div></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考论文"><span class="nav-number">1.</span> <span class="nav-text">参考论文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对UED的攻讦"><span class="nav-number">3.</span> <span class="nav-text">对UED的攻讦</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广义均匀嵌入策略（Generalized-Uniform-Embedding）"><span class="nav-number">4.</span> <span class="nav-text">广义均匀嵌入策略（Generalized Uniform Embedding）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UERD（Uniform-Embedding-Revisted-Distortion）设计"><span class="nav-number">5.</span> <span class="nav-text">UERD（Uniform Embedding Revisted Distortion）设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div></div></div></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">© <span itemprop="copyrightYear">2019</span><span class="with-love" id="animate"><i class="fa fa-user"></i></span> <span class="author" itemprop="copyrightHolder">YangDu</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-area-chart"></i></span> <span class="post-meta-item-text">站点总字数：</span> <span title="站点总字数">19k</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-coffee"></i></span> <span class="post-meta-item-text">站点阅读时长 ≈</span> <span title="站点阅读时长">17 分钟</span></div><div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div> <span class="post-meta-divider">|</span><div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.0.1</div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span id="scrollpercent"><span>0</span>%</span></div></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script src="/lib/jquery/index.js?v=2.1.3"></script><script src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script src="/js/src/utils.js?v=7.0.1"></script><script src="/js/src/motion.js?v=7.0.1"></script><script src="/js/src/affix.js?v=7.0.1"></script><script src="/js/src/schemes/pisces.js?v=7.0.1"></script><script src="/js/src/scrollspy.js?v=7.0.1"></script><script src="/js/src/post-details.js?v=7.0.1"></script><script src="/js/src/next-boot.js?v=7.0.1"></script><script src="/js/src/js.cookie.js?v=7.0.1"></script><script src="/js/src/scroll-cookie.js?v=7.0.1"></script><script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css"><script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script><script>var gitalk=new Gitalk({clientID:"ee4d73cfb2c4a1dc4831",clientSecret:"236cac6330147a2802514770d46103305a4d69ad",repo:"myblog",owner:"Odinaris",admin:["Odinaris"],id:md5(location.pathname),language:window.navigator.language||window.navigator.userLanguage,distractionFreeMode:"true"});gitalk.render("gitalk-container")</script><script>
+</svg></span>个块的相邻八个块的块能量。</p>
+<p>考虑到DC系数的统计特性与AC系数有很大不同，这里作者启发式地将DC系数的失真定义为相邻的AC系数的均值。</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>UERD的介绍到此为止，最近调研文献时又发现了一篇18年的TCSVT，文章是对UERD进行的进一步改进，还是他们课题组的。具体没有细看，等有机会阅读完之后再决定是否介绍那一篇吧。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+      <div>
+          
+    <div style="text-align:center;color: #ccc;font-size:14px;">
+        ------ 本文结束<i class="fa fa-paw"></i>江湖再见 ------</div>
+    
+      </div>
+    
+
+    
+      
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2019/07/02/JPEG隐写术之UERD/">JPEG隐写术之UERD</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 YangDu 的个人博客">YangDu</a></p>
+  <p><span>发布时间:</span>2019年07月02日 - 16:29</p>
+  <p><span>最后更新:</span>2019年07月03日 - 01:00</p>
+  <p><span>原始链接:</span><a href="/2019/07/02/JPEG隐写术之UERD/" title="JPEG隐写术之UERD">http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://odinaris.github.io/2019/07/02/JPEG隐写术之UERD/" aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script>
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success",
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Steganography/" rel="tag"><i class="fa fa-tag"></i> Steganography</a>
+          
+            <a href="/tags/UERD/" rel="tag"><i class="fa fa-tag"></i> UERD</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/01/JPEG隐写术之UED/" rel="next" title="JPEG隐写术之UED">
+                <i class="fa fa-chevron-left"></i> JPEG隐写术之UED
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/13/关于数字图像中的冗余/" rel="prev" title="关于数字图像中的冗余">
+                关于数字图像中的冗余 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+            <a href="/">
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="YangDu">
+            </a>
+            
+              <p class="site-author-name" itemprop="name">YangDu</p>
+              <div class="site-description motion-element" itemprop="description">不必勉强。</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="chat motion-element">
+              
+              
+              <i class="fa fa-comment"></i>
+                  Chat
+                
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Odinaris" title="GitHub → https://github.com/Odinaris" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:Odinaris@foxmail.com" title="E-Mail → mailto:Odinaris@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考论文"><span class="nav-number">1.</span> <span class="nav-text">参考论文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">2.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对UED的攻讦"><span class="nav-number">3.</span> <span class="nav-text">对UED的攻讦</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广义均匀嵌入策略（Generalized-Uniform-Embedding）"><span class="nav-number">4.</span> <span class="nav-text">广义均匀嵌入策略（Generalized Uniform Embedding）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UERD（Uniform-Embedding-Revisted-Distortion）设计"><span class="nav-number">5.</span> <span class="nav-text">UERD（Uniform Embedding Revisted Distortion）设计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结语"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">© <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YangDu</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">21k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点阅读时长 ≈</span>
+    
+    <span title="站点阅读时长">19 分钟</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.0.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+  <script src="/js/src/js.cookie.js?v=7.0.1"></script>
+  <script src="/js/src/scroll-cookie.js?v=7.0.1"></script>
+
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'ee4d73cfb2c4a1dc4831',
+    clientSecret: '236cac6330147a2802514770d46103305a4d69ad',
+    repo: 'myblog',
+    owner: 'Odinaris',
+    admin: ['Odinaris'],
+    id: md5(location.pathname),
+    
+      language: window.navigator.language || window.navigator.userLanguage,
+    
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+  <script>
     // Popup Window;
     var isfetched = false;
     var isXml = true;
@@ -686,7 +1946,25 @@
         onPopupClose();
       }
     });
-  </script><script type="text/x-mathjax-config">
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
   
 
   MathJax.Hub.Config({
@@ -711,20 +1989,97 @@
       }
     });
   });
-</script><script type="text/x-mathjax-config">
+</script>
+
+<script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
     for (i = 0; i < all.length; i += 1) {
       document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
     }
   });
-</script><script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script>$(".highlight").each(function(t,e){var n=$("<div>").addClass("highlight-wrap");$(e).after(n),n.append($("<button>").addClass("copy-btn").append("复制").on("click",function(t){var e=$(this).parent().find(".code").find(".line").map(function(t,e){return $(e).text()}).toArray().join("\n"),n=document.createElement("textarea"),o=window.pageYOffset||document.documentElement.scrollTop;n.style.top=o+"px",n.style.position="absolute",n.style.opacity="0",n.readOnly=!0,n.value=e,document.body.appendChild(n),n.select(),n.setSelectionRange(0,e.length),n.readOnly=!1,document.execCommand("copy")?$(this).text("复制成功"):$(this).text("复制失败"),n.blur(),$(this).blur()})).on("mouseleave",function(t){var e=$(this).find(".copy-btn");setTimeout(function(){e.text("复制")},300)}).append(e)})</script><script type="text/x-mathjax-config">
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+<script>
+  $('.highlight').each(function(i, e) {
+    var $wrap = $('<div>').addClass('highlight-wrap');
+    $(e).after($wrap);
+    $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+      var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+        return $(e).text();
+      }).toArray().join('\n');
+      var ta = document.createElement('textarea');
+      var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+      ta.style.top = yPosition + 'px'; // Prevent page scroll
+      ta.style.position = 'absolute';
+      ta.style.opacity = '0';
+      ta.readOnly = true;
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, code.length);
+      ta.readOnly = false;
+      var result = document.execCommand('copy');
+      
+        if (result) $(this).text('复制成功');
+        else $(this).text('复制失败');
+      
+      ta.blur(); // For iOS
+      $(this).blur();
+    })).on('mouseleave', function(e) {
+      var $b = $(this).find('.copy-btn');
+      setTimeout(function() {
+        $b.text('复制');
+      }, 300);
+    }).append(e);
+  })
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
-</script><script type="text/x-mathjax-config">
+</script>
+
+<script type="text/x-mathjax-config">
   MathJax.Hub.Queue(function() {
     var all = MathJax.Hub.getAllJax(), i;
     for(i=0; i < all.length; i += 1) {
       all[i].SourceElement().parentNode.className += ' has-jax';
     }
   });
-</script><script type="text/javascript" src=""></script></body></html>
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  
+
+  
+
+  
+
+
+</body></html>
