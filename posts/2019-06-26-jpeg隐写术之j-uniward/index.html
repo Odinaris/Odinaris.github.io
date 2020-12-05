@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang='zh' ><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>JPEG隐写术之J-UNIWARD|临水撷石</title>
+<link rel="stylesheet" href="https://odinaris.github.io/css/eureka.min.css">
+<script defer src="https://odinaris.github.io/js/eureka.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/solarized-light.min.css"media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"integrity="sha256-uNYoXefWRqv&#43;PsIF/OflNmwtKM4lStn9yrz2gVl6ymo="crossorigin></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://odinaris.github.io/images/icon_hua5b936dbdee4d1fc5715a2e206ffad1d_11247_32x32_fill_box_center_2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://odinaris.github.io/images/icon_hua5b936dbdee4d1fc5715a2e206ffad1d_11247_180x180_fill_box_center_2.png">
+
+<meta name="description"
+  content="本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"文章",
+      "item":"https://odinaris.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"JPEG隐写术之J-UNIWARD",
+      "item":"https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/"}]
+}
+</script><script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/"
+    },
+    "headline": "JPEG隐写术之J-UNIWARD | 临水撷石","datePublished": "2019-06-26T00:00:00+00:00",
+    "dateModified": "2019-06-26T00:00:00+00:00",
+    "wordCount":  2231 ,
+    "author": {
+        "@type": "Person",
+        "name": ["duyang"]
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Yang Du",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://odinaris.github.io/images/icon.png"
+        }
+        },
+    "description": "本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。"
+}
+</script><meta property="og:title" content="JPEG隐写术之J-UNIWARD | 临水撷石" />
+<meta property="og:type" content="article" />
+
+
+<meta property="og:image" content="https://odinaris.github.io/images/icon.png">
+
+
+<meta property="og:url" content="https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/" />
+
+
+
+
+<meta property="og:description" content="本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。" />
+
+
+
+
+<meta property="og:locale" content="zh" />
+
+
+
+
+<meta property="og:site_name" content="临水撷石" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2019-06-26T00:00:00&#43;00:00" />
+
+
+<meta property="article:modified_time" content="2019-06-26T00:00:00&#43;00:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="科研" />
+
+<meta property="article:tag" content="JPEG" />
+
+
+
+
+
+
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/" />
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/" />
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/" />
+
+
+
+
+
+<body class="flex flex-col min-h-screen">
+    <header class="flex items-center fixed w-full min-h-16 z-50 bg-secondary-bg shadow-sm">
+        <div class="container mx-auto">
+            <div class="max-w-screen-xl"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    
+    if (storageColorScheme == 'Auto' && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    } else if (storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+    
+</script>
+<nav class="flex items-center justify-between flex-wrap p-4">
+    <a href="/" class="mr-6 text-primary-text text-xl font-bold">临水撷石</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:flex-grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="text-sm md:flex-grow pb-4 md:pb-0 border-b md:border-b-0" id="current-url"
+            currenturl="https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/">
+            
+            <a href="/posts/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">文章</a>
+            
+            <a href="/message/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">札记</a>
+            
+            <a href="/authors/duyang/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">关于我</a>
+            
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    
+                    <i class="fas fa-sun"></i>
+                    
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka">Light</span>
+                    <span class="px-4 py-1 hover:text-eureka">Dark</span>
+                    <span class="px-4 py-1 hover:text-eureka">Auto</span>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    let element = document.getElementById('lightDarkMode')
+    
+    if (storageColorScheme == 'Auto') {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'adjust')
+        element.firstElementChild.classList.add('fa-adjust')
+        document.addEventListener('DOMContentLoaded', () => {
+            switchMode('Auto')
+        })
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+        
+    });
+
+    let currenturl = document.getElementById('current-url').getAttribute('currenturl')
+        if (currenturl.length > 1) {
+            currenturl = currenturl.substr(0, currenturl.length - 1)
+        }
+
+        sessionStorage.setItem("mainKey", currenturl)
+
+        let elements = document.getElementsByClassName('main-a');
+        for (let i in elements) {
+            if (typeof elements[i] === "object") {
+                let elementurl = elements[i].getAttribute('href')
+                if (elementurl.length > 1 && elementurl.charAt(elementurl.length - 1) == '/') {
+                    elementurl = elementurl.substr(0, elementurl.length - 1)
+                }
+                if (elementurl == sessionStorage.getItem("mainKey")) {
+                    elements[i].classList.add('text-eureka')
+                } else {
+                    elements[i].classList.remove('text-eureka')
+                }
+            }
+        }
+</script></div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-16">
+        
+        <div class="container mx-auto ">
+            <div class="max-w-screen-xl lg:px-4 xl:px-8">
+
+
+<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+        <h1 class="font-bold text-3xl text-primary-text">JPEG隐写术之J-UNIWARD</h1>
+        <div class="flex flex-wrap flex-row items-center my-2 text-tertiary-text">
+    <div class="mr-6 my-2">
+        <i class="fas fa-calendar mr-1"></i>
+        <span>2019-06-26</span>
+    </div>
+    <div class="mr-6 my-2">
+        <i class="fas fa-clock mr-1"></i>
+        <span>5分钟阅读时长</span>
+    </div>
+    
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/" class="hover:text-eureka">科研</a>
+        
+    </div>
+    
+
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://odinaris.github.io/series/jpeg%E9%9A%90%E5%86%99%E6%9C%AF/" class="hover:text-eureka">JPEG隐写术</a>
+        
+    </div>
+    
+</div>
+        
+        
+        <div class="content">
+            <h2 id="论文信息">论文信息</h2>
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Authors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Universal distortion function for steganography in an arbitrary domain</td>
+<td>Vojtˇech Holub, Jessica Fridrich and Tomáš Denemark</td>
+</tr>
+<tr>
+<td>Digital Image Steganography Using Universal Distortion</td>
+<td>Vojtˇech Holub and Jessica Fridrich</td>
+</tr>
+</tbody>
+</table>
+<h2 id="摘要">摘要</h2>
+<p>近几年来，最成功的隐写术是在嵌入秘密数据的同时最小化一个适合定义的失真函数。而由于一些高效实用的编码存在（能够达到逼近率失真边界的嵌入效果），对于从事隐写术的科研工作者来说，本质上唯一剩下的任务就是设计失真函数。</p>
+<p>这篇paper中提出了一种通用失真设计方案，UNIWARD（UNIversal WAvelet Relative Distortion，通用小波相对失真）。UNIWARD可以适用任何域，如空域（S-UNIWARD），JPEG域（J-UNIWARD）还有基于边信息的JPEG域（SI-UNIWARD）。</p>
+<p>最近的隐写分析技术，如RM（Rich Model，富模型）可以通过使用局部多项式模型来很好地拟合clean edges上的改变，因而可以有效检测出clean edges上的改变。因此嵌入算法需要能够将数据嵌入在纹理或噪声区域，这些区域从任何方向上都不容易被建模，因此难以被检测。</p>
+<p>UNIWARD的嵌入失真是<strong>载体图像的方向滤波器组分解中的系数的相对变化总和</strong>。这种方向性使得嵌入变化区域多集中在那些难以建模在多个方向的区域，如纹理和噪声区域，而避免了光滑区域或者clean edges被修改。</p>
+<h2 id="符号解释">符号解释</h2>
+<table>
+<thead>
+<tr>
+<th>Notation</th>
+<th>Expalanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$$\pmb{X}$$</td>
+<td>cover的量化后DCT系数矩阵</td>
+</tr>
+<tr>
+<td><strong>$$\pmb{Y}$$</strong></td>
+<td>stego的量化后DCT系数矩阵</td>
+</tr>
+<tr>
+<td>$$X_{ij}$$</td>
+<td>cover中第$i$行第$j$列的量化后DCT系数值</td>
+</tr>
+<tr>
+<td>$$Y_{ij}$$</td>
+<td>stego中第$i$行第$j$列的量化后DCT系数值</td>
+</tr>
+<tr>
+<td>$$n_1$$</td>
+<td>行数</td>
+</tr>
+<tr>
+<td>$$n_2$$</td>
+<td>列数</td>
+</tr>
+</tbody>
+</table>
+<h2 id="方向滤波器组directional-filter-bank">方向滤波器组（Directional filter bank）</h2>
+<p>方向滤波器组包括三个线性平移不变滤波器，他们的核用$\pmb{B}={\pmb{K}^{(1)},\pmb{K}^{(2)},\pmb{K}^{(3)}}$表示。</p>
+<p>这三个滤波器通过计算方向残差$\pmb{W}^{(k)}=\pmb{K}^{(k)}\star \pmb{X}$来分别从水平、垂直和对角线方向来评估给定图像$\pmb{X}$的光滑程度，其中$'\star'$表示镜像填充（mirror-padded）卷积操作使得方向残差$\pmb{W}^{(k)}$的尺寸与cover的量化后DCT系数矩阵尺寸一致，都是$n_1\times n_2$。<strong>镜像填充的作用是防止在边界处引入embedding artifacts。</strong></p>
+<p>滤波器组的选择是任意的，而在这里作者根据比对各种滤波器组之后，最终选择了从一维低通（和高通）小波分解滤波器来构建滤波器组的核：</p>
+<p>$$\pmb{K}^{1}=\pmb{h}\cdot\pmb{g}^T,\pmb{K}^{2}=\pmb{g}\cdot\pmb{h}^T,\pmb{K}^{3}=\pmb{g}\cdot\pmb{g}^T.$$</p>
+<p>这种情况下的滤波器分别对应于二维的LH，HL和HH小波方向高通滤波器，并且残差与$\pmb{X}$的第一级未抽取小波LH，HL和HH方向分解一致。<strong>滤波器只限于小波滤波器组，是因为小波表示是已知的能够为自然场景提供良好的去相关性（decorrelation）和能量紧凑化（energy compactification）</strong>。</p>
+<h2 id="失真函数distortion-function">失真函数（Distortion function）</h2>
+<p>对于JPEG图像来说，计算cover和stego之间的失真，首先要将JPEG文件解压到空域，即此时的$\pmb{X}$和$\pmb{Y}$是对应的空域像素矩阵，而非DCT系数矩阵，失真可表示如下：
+$$\mathrm{D}(\pmb{X,Y})=\mathrm{D}(J^{-1}(\pmb{X}),J^{-1}(\pmb{Y}))$$</p>
+<p>$$\mathrm{D}(\pmb{X,Y})=\sum_{k=1}^3 \sum_{u,v} \frac{|W_{uv}^{k}(X)-W_{uv}^{k}(Y)|}{\epsilon+|W_{uv}^{k}(X)|}$$</p>
+<p>其中$\epsilon$是一个正数标量，用于避免分母为0。从上式看出，分母越大，最终失真也就越小。也就是在cover矩阵中，更大的小波系数发生修改造成更小的失真，而这一般是发生在纹理/噪声区域以及图像边缘部分。而另一方面，如果至少一个小的小波系数发生了较大改变，都会造成很大的失真。因此，在至少一个方向上，上式的设计不鼓励嵌入修改发生在内容相对平滑（平滑也更容易被建模）的区域。</p>
+<h2 id="uniward的加性近似">UNIWARD的加性近似</h2>
+<h3 id="为什么要使用加性近似">为什么要使用加性近似？</h3>
+<p>在JPEG域中，当修改一个JPEG系数时，会同时影响一整个$8\times8$的像素块，因此有$23\times 23$大小的小波系数也会受到影响。因此当修改多个邻近的像素或者DCT系数时，造成的嵌入修改发生重叠，相互作用。因此失真$\mathrm{D}$是<strong>非加性</strong>的。</p>
+<p>虽然存在一些使用非加性失真函数的嵌入方法，如Gibbs构造，但使用加性失真更容易进行嵌入。并且在UNIWARD中，相邻的嵌入修改造成的影响过于明显使得Gibbs构造的嵌入效果差强人意。UNIWARD不采用Gibbs构造的进一步解释可参考论文，这里不作过多赘述。</p>
+<p>使用加性近似的显著优点是在全局设计上的便利性。因为嵌入过程可以直接通过使用隐写术中的一个标准工具 - STC码来实现。</p>
+<h3 id="如何定义加性近似">如何定义加性近似？</h3>
+<p>任何失真函数$\mathrm{D}(\pmb{X,Y})$都可以用来嵌入到加性近似中，通过使用D来计算修改每个像素值或DCT系数$X_{i,j}$的成本$\rho_{ij}$。</p>
+<p>将$X_{i,j}$修改成$Y_{i,j}$并保持其他系数值不变的代价定义如下：</p>
+<p>$$\rho(\pmb{X},Y_{ij})=D(\pmb{X},\pmb{X}_{\sim ij}Y_{ij})$$</p>
+<p>其中$\pmb{X}<em>{\sim ij}Y</em>{ij}$是只有第$ij$个元素发生改变的$\pmb{X}$。当$\pmb{X}=\pmb{Y}$时，$\rho=0$。</p>
+<p>用$D_A(\pmb{X,Y})$来表示加性近似：</p>
+<p>$$D_A(\pmb{X,Y} )=\sum_{i=1}^{n_1} \sum_{j=1}^{n_2} \rho_{ij} (\pmb{X}, Y_{ij} ) [X_{ij}\neq Y_{ij}]$$</p>
+<p>其中$[S]$用来表示艾弗森括号，当括号中的状态S为真时，等于1，否则为0。</p>
+<p>由于失真函数$\mathrm{D}(\pmb{X,Y})$中的绝对值存在，表明</p>
+<p>$$\rho_{ij}(\pmb{X},X_{ij}-1)=\rho_{ij}(\pmb{X},X_{ij}+1)$$</p>
+<p>这就使得UNIWARD可以使用三元嵌入操作，进一步提高嵌入效率。具体的嵌入算法构造可以使用STC码的三元多层版本。</p>
+
+        </div>
+        
+        <div class="my-4">
+    
+    <a href="https://odinaris.github.io/tags/%E7%A7%91%E7%A0%94/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#科研</a>
+    
+    <a href="https://odinaris.github.io/tags/jpeg/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#JPEG</a>
+    
+</div>
+        
+        
+        
+        
+        
+        <div class="py-2">
+    
+    <div class="flex flex-col md:flex-row items-center my-8">
+        <a href="https://odinaris.github.io/authors/duyang/" class="w-24 h-24 md:mr-4">
+            
+            
+            <img src="https://odinaris.github.io/authors/duyang/avatar.jpg" class="w-full bg-primary-bg rounded-full" alt="Avatar">
+            
+        </a>
+        <div class="w-full md:w-auto mt-4 md:mt-0">
+            <a href="https://odinaris.github.io/authors/duyang/" class="block font-bold text-lg pb-1 mb-2 border-b">杜洋</a>
+            <span class="block pb-2">我欲因之梦吴越，一夜飞渡镜湖月。</span>
+            
+            
+            <a href="mailto:duyang@stu.ahu.edu.cn" class="mr-1">
+                <i class="fas fa-envelope"></i>
+            </a>
+            
+            
+            <a href="https://github.com/odinaris" class="mr-1">
+                <i class="fab fa-github"></i>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
+        
+        
+        
+<div class="flex flex-col md:flex-row md:justify-between -mx-2 mt-4 px-2 pt-4 border-t">
+    <div>
+        
+        <span class="block font-bold">上一页</span>
+        <a href="https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/" class="block">JPEG隐写术之F5、-F5和nsF5</a>
+        
+    </div>
+    <div class="md:text-right mt-4 md:mt-0">
+        
+        <span class="block font-bold">下一页</span>
+        <a href="https://odinaris.github.io/posts/2019-03-15-latex-ieeetran%E6%A8%A1%E6%9D%BF%E8%B8%A9%E5%9D%91%E6%97%A5%E5%BF%97/" class="block">Latex - IEEEtran模板踩坑日志</a>
+        
+    </div>
+</div>
+
+        
+    </div>
+    
+    <div class="col-span-2">
+        
+        
+<div class="bg-secondary-bg rounded p-6">
+    <h3 class="text-lg font-semibold mb-4">系列文章</h3>
+    <div class="content">
+        
+        
+        <a href="https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/">JPEG隐写术之UERD</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/">JPEG隐写术之UED</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/">JPEG隐写术之F5、-F5和nsF5</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/">JPEG隐写术之J-UNIWARD</a>
+        <br />
+        
+        
+    </div>
+</div>
+        
+        
+        <div class="sticky top-16 z-10 hidden lg:block px-6 py-4  bg-primary-bg ">
+    <span class="text-lg font-semibold">本页内容</span>
+</div>
+<div class="sticky-toc hidden lg:block px-6 pb-6 ">
+    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#论文信息">论文信息</a></li>
+    <li><a href="#摘要">摘要</a></li>
+    <li><a href="#符号解释">符号解释</a></li>
+    <li><a href="#方向滤波器组directional-filter-bank">方向滤波器组（Directional filter bank）</a></li>
+    <li><a href="#失真函数distortion-function">失真函数（Distortion function）</a></li>
+    <li><a href="#uniward的加性近似">UNIWARD的加性近似</a>
+      <ol>
+        <li><a href="#为什么要使用加性近似">为什么要使用加性近似？</a></li>
+        <li><a href="#如何定义加性近似">如何定义加性近似？</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        enableStickyToc();
+    });
+</script>
+        
+    </div>
+    
+
+    
+    
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded p-6">
+        <h2 class="text-lg font-semibold mb-4">相关</h2>
+        <div class="content">
+            
+            <a href="https://odinaris.github.io/posts/2019-03-15-latex-ieeetran%E6%A8%A1%E6%9D%BF%E8%B8%A9%E5%9D%91%E6%97%A5%E5%BF%97/">Latex - IEEEtran模板踩坑日志</a>
+            <br />
+            
+        </div>
+    </div>
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+
+            </div>
+        </div>
+        
+    </main>
+
+    <footer>
+        <div class="container mx-auto">
+            <div class="max-w-screen-xl"><footer class="w-full text-center p-6 pin-b text-sm text-tertiary-text">
+    <p> Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</footer></div>
+        </div>
+    </footer>
+</body>
+
+</html>

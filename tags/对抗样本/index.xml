@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>对抗样本 on 临水撷石</title>
+    <link>https://odinaris.github.io/tags/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC/</link>
+    <description>Recent content in 对抗样本 on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/tags/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ECCV2020对抗样本论文汇总</title>
+      <link>https://odinaris.github.io/posts/2020-10-09-eccv2020%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%B1%87%E6%80%BB/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2020-10-09-eccv2020%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%B1%87%E6%80%BB/</guid>
+      <description>ECCV2020对抗样本相关论文汇总梳理。</description>
+    </item>
+    
+  </channel>
+</rss>

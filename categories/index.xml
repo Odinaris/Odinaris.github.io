@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 临水撷石</title>
+    <link>https://odinaris.github.io/categories/</link>
+    <description>Recent content in Categories on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 04 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>技术</title>
+      <link>https://odinaris.github.io/categories/%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/categories/%E6%8A%80%E6%9C%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>科研</title>
+      <link>https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>生活</title>
+      <link>https://odinaris.github.io/categories/%E7%94%9F%E6%B4%BB/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/categories/%E7%94%9F%E6%B4%BB/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

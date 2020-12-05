@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Series on 临水撷石</title>
+    <link>https://odinaris.github.io/series/</link>
+    <description>Recent content in Series on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 04 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>博客搭建</title>
+      <link>https://odinaris.github.io/series/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/series/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>对抗样本</title>
+      <link>https://odinaris.github.io/series/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/series/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>科研绘图</title>
+      <link>https://odinaris.github.io/series/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/</link>
+      <pubDate>Fri, 10 Jul 2020 11:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/series/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>年终总结</title>
+      <link>https://odinaris.github.io/series/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Tue, 26 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/series/%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JPEG隐写术</title>
+      <link>https://odinaris.github.io/series/jpeg%E9%9A%90%E5%86%99%E6%9C%AF/</link>
+      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/series/jpeg%E9%9A%90%E5%86%99%E6%9C%AF/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Latex</title>
+      <link>https://odinaris.github.io/series/latex/</link>
+      <pubDate>Fri, 15 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/series/latex/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

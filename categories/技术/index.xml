@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技术 on 临水撷石</title>
+    <link>https://odinaris.github.io/categories/%E6%8A%80%E6%9C%AF/</link>
+    <description>Recent content in 技术 on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 04 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/categories/%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo主题挑选</title>
+      <link>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2020-12-04-hugo%E4%B8%BB%E9%A2%98%E6%8C%91%E9%80%89/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2020-12-04-hugo%E4%B8%BB%E9%A2%98%E6%8C%91%E9%80%89/</guid>
+      <description>Stack homepage: https://themes.gohugo.io/hugo-theme-stack/ demo: https://theme-stack.jimmycai.com/ Eureka (目前使用) homepage: https://themes.gohugo.io/hugo-eureka/ demo: https://themes.gohugo.io//theme/hugo-eureka/ hello-friend-ng homepage: https://themes.gohugo.io/hugo-theme-hello-friend-ng/ demo: https://themes.gohugo.io//theme/hugo-theme-hello-friend-ng/</description>
+    </item>
+    
+    <item>
+      <title>博客功能需求</title>
+      <link>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2020-12-04-%E5%8D%9A%E5%AE%A2%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2020-12-04-%E5%8D%9A%E5%AE%A2%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82/</guid>
+      <description>照片墙 留言墙 部署到Netlify 云Markdown笔记本 -&amp;gt; Yosoro</description>
+    </item>
+    
+    <item>
+      <title>博客设计idea素材</title>
+      <link>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2020-12-04-%E5%8D%9A%E5%AE%A2%E8%AE%BE%E8%AE%A1idea%E7%B4%A0%E6%9D%90/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2020-12-04-%E5%8D%9A%E5%AE%A2%E8%AE%BE%E8%AE%A1idea%E7%B4%A0%E6%9D%90/</guid>
+      <description>1. 图片样式 link: https://themes.gohugo.io/theme/hugo-theme-introduction/ 这阴影设计的绝了！</description>
+    </item>
+    
+    <item>
+      <title>hexo主题优化配置记录</title>
+      <link>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2019-06-28-hexo%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Fri, 28 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2019-06-28-hexo%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95/</guid>
+      <description>最近在网上查询了很多关于如何优化配置Hexo主题的博客，对自己的博客进行了各种各样的探索。猛然发现如果不记录自己做了哪些修改，以后可能都不知道如何怎样关闭/删除/更新。故把自己使用到的配置和参考的博客记录下来。</description>
+    </item>
+    
+    <item>
+      <title>Latex - IEEEtran模板踩坑日志</title>
+      <link>https://odinaris.github.io/posts/2019-03-15-latex-ieeetran%E6%A8%A1%E6%9D%BF%E8%B8%A9%E5%9D%91%E6%97%A5%E5%BF%97/</link>
+      <pubDate>Fri, 15 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-03-15-latex-ieeetran%E6%A8%A1%E6%9D%BF%E8%B8%A9%E5%9D%91%E6%97%A5%E5%BF%97/</guid>
+      <description>最近有篇paper需要投稿到TCSVT，所以前几天下载了IEEEtran模板把之前的word版转换成latex版。因为编辑过程中遇到不少困难，故特地记录下来，方便自己以后查阅。</description>
+    </item>
+    
+  </channel>
+</rss>

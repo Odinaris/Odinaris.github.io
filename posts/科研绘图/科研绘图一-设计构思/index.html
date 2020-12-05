@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang='zh' ><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>科研绘图(一)设计构思|临水撷石</title>
+<link rel="stylesheet" href="https://odinaris.github.io/css/eureka.min.css">
+<script defer src="https://odinaris.github.io/js/eureka.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/solarized-light.min.css"media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"integrity="sha256-uNYoXefWRqv&#43;PsIF/OflNmwtKM4lStn9yrz2gVl6ymo="crossorigin></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://odinaris.github.io/images/icon_hua5b936dbdee4d1fc5715a2e206ffad1d_11247_32x32_fill_box_center_2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://odinaris.github.io/images/icon_hua5b936dbdee4d1fc5715a2e206ffad1d_11247_180x180_fill_box_center_2.png">
+
+<meta name="description"
+  content="之所以想写科研绘图这个系列，是因为最近组里的一些同学在写论文时，在绘图制表时，遇到过一些困扰。同时他们也希望把图表绘制得更好看，看起来能够达到顶刊的水平，显得“高大上”。因此，想专门写几篇文章来分享一些我的经验。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"文章",
+      "item":"https://odinaris.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"科研绘图(一)设计构思",
+      "item":"https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/"}]
+}
+</script><script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/"
+    },
+    "headline": "科研绘图(一)设计构思 | 临水撷石",
+    "image": "https://i.loli.net/2020/12/05/mSXF4LA86ITCJ2Q.png",
+    "datePublished": "2020-07-10T08:00:00+00:00",
+    "dateModified": "2020-07-10T00:00:00+00:00",
+    "wordCount":  2444 ,
+    "author": {
+        "@type": "Person",
+        "name": ["duyang"]
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Yang Du",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://odinaris.github.io/images/icon.png"
+        }
+        },
+    "description": "之所以想写科研绘图这个系列，是因为最近组里的一些同学在写论文时，在绘图制表时，遇到过一些困扰。同时他们也希望把图表绘制得更好看，看起来能够达到顶刊的水平，显得“高大上”。因此，想专门写几篇文章来分享一些我的经验。"
+}
+</script><meta property="og:title" content="科研绘图(一)设计构思 | 临水撷石" />
+<meta property="og:type" content="article" />
+
+
+<meta property="og:image" content="https://odinaris.github.io/images/icon.png">
+
+
+<meta property="og:url" content="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/" />
+
+
+
+
+<meta property="og:description" content="之所以想写科研绘图这个系列，是因为最近组里的一些同学在写论文时，在绘图制表时，遇到过一些困扰。同时他们也希望把图表绘制得更好看，看起来能够达到顶刊的水平，显得“高大上”。因此，想专门写几篇文章来分享一些我的经验。" />
+
+
+
+
+<meta property="og:locale" content="zh" />
+
+
+
+
+<meta property="og:site_name" content="临水撷石" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2020-07-10T08:00:00&#43;00:00" />
+
+
+<meta property="article:modified_time" content="2020-07-10T00:00:00&#43;00:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+
+
+
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E5%9B%9B-%E8%B5%84%E6%96%99%E6%8E%A8%E8%8D%90/" />
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%89-%E5%AD%97%E4%BD%93/" />
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%BA%8C-%E9%85%8D%E8%89%B2/" />
+
+
+
+
+
+<body class="flex flex-col min-h-screen">
+    <header class="flex items-center fixed w-full min-h-16 z-50 bg-secondary-bg shadow-sm">
+        <div class="container mx-auto">
+            <div class="max-w-screen-xl"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    
+    if (storageColorScheme == 'Auto' && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    } else if (storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+    
+</script>
+<nav class="flex items-center justify-between flex-wrap p-4">
+    <a href="/" class="mr-6 text-primary-text text-xl font-bold">临水撷石</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:flex-grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="text-sm md:flex-grow pb-4 md:pb-0 border-b md:border-b-0" id="current-url"
+            currenturl="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/">
+            
+            <a href="/posts/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">文章</a>
+            
+            <a href="/message/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">札记</a>
+            
+            <a href="/authors/duyang/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">关于我</a>
+            
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    
+                    <i class="fas fa-sun"></i>
+                    
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka">Light</span>
+                    <span class="px-4 py-1 hover:text-eureka">Dark</span>
+                    <span class="px-4 py-1 hover:text-eureka">Auto</span>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    let element = document.getElementById('lightDarkMode')
+    
+    if (storageColorScheme == 'Auto') {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'adjust')
+        element.firstElementChild.classList.add('fa-adjust')
+        document.addEventListener('DOMContentLoaded', () => {
+            switchMode('Auto')
+        })
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+        
+    });
+
+    let currenturl = document.getElementById('current-url').getAttribute('currenturl')
+        if (currenturl.length > 1) {
+            currenturl = currenturl.substr(0, currenturl.length - 1)
+        }
+
+        sessionStorage.setItem("mainKey", currenturl)
+
+        let elements = document.getElementsByClassName('main-a');
+        for (let i in elements) {
+            if (typeof elements[i] === "object") {
+                let elementurl = elements[i].getAttribute('href')
+                if (elementurl.length > 1 && elementurl.charAt(elementurl.length - 1) == '/') {
+                    elementurl = elementurl.substr(0, elementurl.length - 1)
+                }
+                if (elementurl == sessionStorage.getItem("mainKey")) {
+                    elements[i].classList.add('text-eureka')
+                } else {
+                    elements[i].classList.remove('text-eureka')
+                }
+            }
+        }
+</script></div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-16">
+        
+        <div class="container mx-auto ">
+            <div class="max-w-screen-xl lg:px-4 xl:px-8">
+
+
+<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+        <h1 class="font-bold text-3xl text-primary-text">科研绘图(一)设计构思</h1>
+        <div class="flex flex-wrap flex-row items-center my-2 text-tertiary-text">
+    <div class="mr-6 my-2">
+        <i class="fas fa-calendar mr-1"></i>
+        <span>2020-07-10</span>
+    </div>
+    <div class="mr-6 my-2">
+        <i class="fas fa-clock mr-1"></i>
+        <span>5分钟阅读时长</span>
+    </div>
+    
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/" class="hover:text-eureka">科研</a>
+        
+    </div>
+    
+
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://odinaris.github.io/series/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/" class="hover:text-eureka">科研绘图</a>
+        
+    </div>
+    
+</div>
+        
+        
+        <div class="my-4">
+            <img src="https://i.loli.net/2020/12/05/mSXF4LA86ITCJ2Q.png" class="w-full" alt="Featured Image">
+        </div>
+        
+        <div class="content">
+            <h2 id="前言">前言</h2>
+<p>之所以想写科研绘图这个系列，是因为最近组里的一些同学在写论文时，在绘图制表时，遇到过一些困扰。同时他们也希望把图表绘制得更好看，看起来能够达到顶刊的水平，显得“高大上”。因此，想专门写几篇文章来分享一些我的经验。</p>
+<p>既如此，为了能让更多人看到，而不仅仅限于组内传播，便将这系列文章发布在知乎，微信这两个平台。希望我的经验能够多多少少帮助到有需要的人。因为阅历尚浅，现在分享的内容不一定都是正确合理的，请大家批评指正，后续我会不断更新。</p>
+<h2 id="设计构思">设计构思</h2>
+<p>科研绘图的设计审美是有迹可循的。这里的美，不是通过某些特殊手段表达思想进而创造出异于常物的场景，而是利用一些准则来设计符合读者观感（让读者看得舒服直观）的插图。亦或者说，科研绘图中也确实表达了作者的思想，即，真正想要展示给读者的信息，通过数据对比或趋势等方法来体现。因此，绘制时首先要考虑你真正要展示的关键信息是什么。绘图时的原则是要突出关键信息，让读者能快速地从展示的数据中推出正确的结论。</p>
+<p>接下来，是我对设计图表过程中的一些建议。</p>
+<h3 id="确保图表符合所投期刊会议要求">确保图表符合所投期刊/会议要求</h3>
+<p>在得到数据之后，绘图之前，首先要查找所投期刊/会议中的投稿指南有无对图表设计方面的要求。若有，应基于期刊/会议的要求进行图表设计。不同期刊对图片的要求可能会略有差异。</p>
+<p>下面是一些出版社对图表设计的说明，供参考：</p>
+<p>Elsevier：https://www.elsevier.com/authors/author-schemas/artwork-and-media-instructions</p>
+<p>Springer：https://www.springer.com/gp/authors-editors/authorandreviewertutorials/writing-a-journal-manuscript/figures-and-tables/10285530</p>
+<h3 id="选择合适图型展示数据">选择合适图型展示数据</h3>
+<p>对于同样的数据，不同的图型，表达的信息是有区别的。因此采用适合的图型能够更有效地向读者传递想要表达的信息。</p>
+<p>一般来说，写论文的时候，展示数据对比的图表是可以参考同方向之前的论文中使用到的图表，这样基本可以确定要用哪一种图来展示数据。</p>
+<p>当实在不知道如何选择要用哪种图来展示数据时，不妨从一些数据可视化网站上找寻答案找寻答案。下图是Andrew Abela博士开发的Extreme Presentation方法中对于如何选择图表而设计的一个工具/指南。图不清晰，可以下载pdf版本：https://extremepresentation.com/wp-content/uploads/choosing-a-good-chart-09-1.pdf。主要思路就是首先要明确自己想要展示的数据之间是什么关系，比如对比，联系，构成亦或者是分布。确定数据间的关系之后，就可以按图索骥，根据图示选择合适的图型了。</p>
+<p><img src="https://i.loli.net/2020/12/05/42vNJaCiPBuhF1Y.jpg" alt="Chart Suggestions - A Thought-Starter"></p>
+<h3 id="减少绘图中冗余信息">减少绘图中冗余信息</h3>
+<blockquote>
+<p>“Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away”</p>
+<p>– Antoine de Saint-Exupery</p>
+</blockquote>
+<p>确定使用的图型之后，根据数据着手绘图。对于绘图的设计，最重要的建议是删繁就简。删去冗余，保留核心。</p>
+<p>哪些信息是冗余的？一个判断原则：删除这个信息，你的数据还能否正确展示？如果能，那么它就是冗余。</p>
+<p>也许一些同学会认为添加丰富的色彩或者风格各异的线条，阴影能更好地吸引读者，也能展示出自己绘图的用心和诚意。但对于科研绘图来说，这并不是正确的做法。科研绘图也讲究美，这里的美并非体现在对各种效果的随意堆叠，而是体现在对核心数据的精心编排。</p>
+<p>Edward Tufte教授在1983年提出过一个概念，数据油墨比（Data-ink Ratio）。绘图时，数据油墨比应越高越好。简单来说，因为数据信息是图型的核心，这部分的比重应占大部分，而其他部分,也就是冗余信息，占比应越少越好。下图展示了将一幅低数据油墨比的图修改成高数据油墨比的图的变化过程：</p>
+<p><img src="https://i.loli.net/2020/12/05/zTyaxR2IHFLPjCs.gif" alt="data-ink"></p>
+<p>来源：https://www.darkhorseanalytics.com/blog/data-looks-better-naked</p>
+<p>从图中可以总结的删除冗余信息的过程包括以下几部分（括号中内容是我的解释）：</p>
+<ol>
+<li>去除彩色背景（为使数据展示清晰直观，背景一般设置成白色，大部分绘图软件默认背景都是白色）</li>
+<li>去除冗余的标签（上图中第二项说的这个标签其实在科研绘图中指的是图例，与X轴坐标上的文字不应该是同一种信息）</li>
+<li>去除阴影（阴影会影响数据的清晰展示，这点毋庸置疑）</li>
+<li>减少颜色（对于同类数据，不要使用过多颜色进行区分，会分散读者注意力）</li>
+<li>去除特效（扁平化绘图的优点是清晰直观，这与科研绘图的要求很契合）</li>
+<li>去除粗体文字（慎用粗体文字，除非这段文字需要特别强调）</li>
+<li>弱化辅助信息存在感，如标签，线条，通过将颜色改灰，线条改细等方式</li>
+<li>亦或直接去除线条，标签，只展示对应的数值</li>
+</ol>
+<p>1-6条建议都适用于科研绘图。对于7，8两点，我认为除了网格线条可以改成灰色或移除，X轴和Y轴的线条保持黑色即可，对应刻度的文字也没必要改成灰色。对于科研绘图，无故将黑色线条文字改成别的颜色，是不合理的，除非有特别原因，需在论文中注明原因。</p>
+<h3 id="多从顶刊顶会论文中找寻设计灵感">多从顶刊顶会论文中找寻设计灵感</h3>
+<p>对于科研绘图，一个很好的学习途径是从top论文中观摩学习。但要持批判的态度来学习，即使是top论文，当中的配图也会存在瑕疵。这时候就体现文献阅读广的好处了，只有看得多，积累的经验才够多，能够知道哪些设计是好的，哪些设计存在不足。多总结好的论文绘图的共性，比如展示某类数据时，通常采用哪种图表，哪些色系。对于觉得绘制的不错或者图表设计的有亮点吸引人的，可以收藏记录下来，并思考自己如何实现。</p>
+<p>总之一句话，多观察，多思考，多练习，培养自己的科研绘图经验和直觉。</p>
+<h2 id="结语">结语</h2>
+<p>最后，我用Springer在投稿指南中对图表设计方面提出的问题作为本篇结语，希望各位在设计图表时，能够带着这些问题思考如何设计更吸引人的图：</p>
+<ul>
+<li>Are there any data that readers might rather see as a display item rather than text?</li>
+<li>Do your figures supplement the text and not just repeat what you have already stated?</li>
+<li>Have you put data into a table that could easily be explained in the text such as simple statistics or p values?</li>
+</ul>
+
+        </div>
+        
+        
+        
+        
+        
+        <div class="py-2">
+    
+    <div class="flex flex-col md:flex-row items-center my-8">
+        <a href="https://odinaris.github.io/authors/duyang/" class="w-24 h-24 md:mr-4">
+            
+            
+            <img src="https://odinaris.github.io/authors/duyang/avatar.jpg" class="w-full bg-primary-bg rounded-full" alt="Avatar">
+            
+        </a>
+        <div class="w-full md:w-auto mt-4 md:mt-0">
+            <a href="https://odinaris.github.io/authors/duyang/" class="block font-bold text-lg pb-1 mb-2 border-b">杜洋</a>
+            <span class="block pb-2">我欲因之梦吴越，一夜飞渡镜湖月。</span>
+            
+            
+            <a href="mailto:duyang@stu.ahu.edu.cn" class="mr-1">
+                <i class="fas fa-envelope"></i>
+            </a>
+            
+            
+            <a href="https://github.com/odinaris" class="mr-1">
+                <i class="fab fa-github"></i>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
+        
+        
+        
+<div class="flex flex-col md:flex-row md:justify-between -mx-2 mt-4 px-2 pt-4 border-t">
+    <div>
+        
+        <span class="block font-bold">上一页</span>
+        <a href="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%BA%8C-%E9%85%8D%E8%89%B2/" class="block">科研绘图(二)配色</a>
+        
+    </div>
+    <div class="md:text-right mt-4 md:mt-0">
+        
+        <span class="block font-bold">下一页</span>
+        <a href="https://odinaris.github.io/posts/2019-12-31-2019-%E7%B9%81%E5%8D%8E%E6%95%A3%E5%B0%BD/" class="block">2019年终总结——繁华散尽</a>
+        
+    </div>
+</div>
+
+        
+    </div>
+    
+    <div class="col-span-2">
+        
+        
+<div class="bg-secondary-bg rounded p-6">
+    <h3 class="text-lg font-semibold mb-4">系列文章</h3>
+    <div class="content">
+        
+        
+        <a href="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E5%9B%9B-%E8%B5%84%E6%96%99%E6%8E%A8%E8%8D%90/">科研绘图(四)资料推荐</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%89-%E5%AD%97%E4%BD%93/">科研绘图(三)字体及图片导出</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%BA%8C-%E9%85%8D%E8%89%B2/">科研绘图(二)配色</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/">科研绘图(一)设计构思</a>
+        <br />
+        
+        
+    </div>
+</div>
+        
+        
+        <div class="sticky top-16 z-10 hidden lg:block px-6 py-4  bg-primary-bg ">
+    <span class="text-lg font-semibold">本页内容</span>
+</div>
+<div class="sticky-toc hidden lg:block px-6 pb-6 ">
+    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#设计构思">设计构思</a>
+      <ol>
+        <li><a href="#确保图表符合所投期刊会议要求">确保图表符合所投期刊/会议要求</a></li>
+        <li><a href="#选择合适图型展示数据">选择合适图型展示数据</a></li>
+        <li><a href="#减少绘图中冗余信息">减少绘图中冗余信息</a></li>
+        <li><a href="#多从顶刊顶会论文中找寻设计灵感">多从顶刊顶会论文中找寻设计灵感</a></li>
+      </ol>
+    </li>
+    <li><a href="#结语">结语</a></li>
+  </ol>
+</nav>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        enableStickyToc();
+    });
+</script>
+        
+    </div>
+    
+
+    
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+
+            </div>
+        </div>
+        
+    </main>
+
+    <footer>
+        <div class="container mx-auto">
+            <div class="max-w-screen-xl"><footer class="w-full text-center p-6 pin-b text-sm text-tertiary-text">
+    <p> Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</footer></div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang='zh' ><meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>JPEG隐写术之UED|临水撷石</title>
+<link rel="stylesheet" href="https://odinaris.github.io/css/eureka.min.css">
+<script defer src="https://odinaris.github.io/js/eureka.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/styles/solarized-light.min.css"media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.1.0/build/highlight.min.js"crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/js/all.min.js"integrity="sha256-uNYoXefWRqv&#43;PsIF/OflNmwtKM4lStn9yrz2gVl6ymo="crossorigin></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"media="print"
+  onload="this.media='all';this.onload=null" crossorigin>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+    });
+  });
+</script>
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="https://odinaris.github.io/images/icon_hua5b936dbdee4d1fc5715a2e206ffad1d_11247_32x32_fill_box_center_2.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://odinaris.github.io/images/icon_hua5b936dbdee4d1fc5715a2e206ffad1d_11247_180x180_fill_box_center_2.png">
+
+<meta name="description"
+  content="本文介绍了JPEG隐写术中的UED算法。首先介绍了JPEG的统计特性与隐写分析之间的关系，然后介绍了nsF5算法的修改策略，从而引出均匀嵌入（Uniform Embedding）策略的思想并给出了均匀嵌入失真（Uniform Embedding Distortion）函数的公式。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1 ,
+      "name":"文章",
+      "item":"https://odinaris.github.io/posts/"},{
+      "@type": "ListItem",
+      "position": 2 ,
+      "name":"JPEG隐写术之UED",
+      "item":"https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/"}]
+}
+</script><script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/"
+    },
+    "headline": "JPEG隐写术之UED | 临水撷石","datePublished": "2019-07-01T00:00:00+00:00",
+    "dateModified": "2019-07-01T00:00:00+00:00",
+    "wordCount":  2679 ,
+    "author": {
+        "@type": "Person",
+        "name": ["duyang"]
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Yang Du",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://odinaris.github.io/images/icon.png"
+        }
+        },
+    "description": "本文介绍了JPEG隐写术中的UED算法。首先介绍了JPEG的统计特性与隐写分析之间的关系，然后介绍了nsF5算法的修改策略，从而引出均匀嵌入（Uniform Embedding）策略的思想并给出了均匀嵌入失真（Uniform Embedding Distortion）函数的公式。"
+}
+</script><meta property="og:title" content="JPEG隐写术之UED | 临水撷石" />
+<meta property="og:type" content="article" />
+
+
+<meta property="og:image" content="https://odinaris.github.io/images/icon.png">
+
+
+<meta property="og:url" content="https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/" />
+
+
+
+
+<meta property="og:description" content="本文介绍了JPEG隐写术中的UED算法。首先介绍了JPEG的统计特性与隐写分析之间的关系，然后介绍了nsF5算法的修改策略，从而引出均匀嵌入（Uniform Embedding）策略的思想并给出了均匀嵌入失真（Uniform Embedding Distortion）函数的公式。" />
+
+
+
+
+<meta property="og:locale" content="zh" />
+
+
+
+
+<meta property="og:site_name" content="临水撷石" />
+
+
+
+
+
+
+<meta property="article:published_time" content="2019-07-01T00:00:00&#43;00:00" />
+
+
+<meta property="article:modified_time" content="2019-07-01T00:00:00&#43;00:00" />
+
+
+
+<meta property="article:section" content="posts" />
+
+
+<meta property="article:tag" content="科研" />
+
+<meta property="article:tag" content="JPEG" />
+
+
+
+
+
+
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/" />
+
+
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/" />
+
+
+
+<meta property="og:see_also" content="https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/" />
+
+
+
+<body class="flex flex-col min-h-screen">
+    <header class="flex items-center fixed w-full min-h-16 z-50 bg-secondary-bg shadow-sm">
+        <div class="container mx-auto">
+            <div class="max-w-screen-xl"><script>
+    let storageColorScheme = localStorage.getItem("lightDarkMode")
+    
+    if (storageColorScheme == 'Auto' && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    } else if (storageColorScheme == "Dark") {
+        document.getElementsByTagName('html')[0].classList.add('dark')
+    }
+    
+</script>
+<nav class="flex items-center justify-between flex-wrap p-4">
+    <a href="/" class="mr-6 text-primary-text text-xl font-bold">临水撷石</a>
+    <button id="navbar-btn" class="md:hidden flex items-center px-3 py-2" aria-label="Open Navbar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div id="target"
+        class="hidden block md:flex md:flex-grow md:justify-between md:items-center w-full md:w-auto text-primary-text z-20">
+        <div class="text-sm md:flex-grow pb-4 md:pb-0 border-b md:border-b-0" id="current-url"
+            currenturl="https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/">
+            
+            <a href="/posts/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">文章</a>
+            
+            <a href="/message/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">札记</a>
+            
+            <a href="/authors/duyang/"
+                class="block mt-4 md:inline-block md:mt-0 hover:text-eureka mr-4 main-a">关于我</a>
+            
+        </div>
+
+        <div class="flex">
+            <div class="relative pt-4 md:pt-0">
+                <div class="cursor-pointer hover:text-eureka" id="lightDarkMode">
+                    
+                    <i class="fas fa-sun"></i>
+                    
+                </div>
+                <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-30" id="is-open">
+                </div>
+                <div class="absolute flex flex-col left-0 md:left-auto right-auto md:right-0 hidden bg-secondary-bg w-48 rounded py-2 border border-tertiary-bg cursor-pointer z-40"
+                    id='lightDarkOptions'>
+                    <span class="px-4 py-1 hover:text-eureka">Light</span>
+                    <span class="px-4 py-1 hover:text-eureka">Dark</span>
+                    <span class="px-4 py-1 hover:text-eureka">Auto</span>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+    <div class="fixed hidden inset-0 opacity-0 h-full w-full cursor-default z-0" id="is-open-mobile">
+    </div>
+
+</nav>
+<script>
+    let element = document.getElementById('lightDarkMode')
+    
+    if (storageColorScheme == 'Auto') {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'adjust')
+        element.firstElementChild.classList.add('fa-adjust')
+        document.addEventListener('DOMContentLoaded', () => {
+            switchMode('Auto')
+        })
+    } else if (storageColorScheme == "Dark") {
+        element.firstElementChild.classList.remove('fa-sun')
+        element.firstElementChild.setAttribute("data-icon", 'moon')
+        element.firstElementChild.classList.add('fa-moon')
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        getcolorscheme();
+        switchBurger();
+        
+    });
+
+    let currenturl = document.getElementById('current-url').getAttribute('currenturl')
+        if (currenturl.length > 1) {
+            currenturl = currenturl.substr(0, currenturl.length - 1)
+        }
+
+        sessionStorage.setItem("mainKey", currenturl)
+
+        let elements = document.getElementsByClassName('main-a');
+        for (let i in elements) {
+            if (typeof elements[i] === "object") {
+                let elementurl = elements[i].getAttribute('href')
+                if (elementurl.length > 1 && elementurl.charAt(elementurl.length - 1) == '/') {
+                    elementurl = elementurl.substr(0, elementurl.length - 1)
+                }
+                if (elementurl == sessionStorage.getItem("mainKey")) {
+                    elements[i].classList.add('text-eureka')
+                } else {
+                    elements[i].classList.remove('text-eureka')
+                }
+            }
+        }
+</script></div>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-16">
+        
+        <div class="container mx-auto ">
+            <div class="max-w-screen-xl lg:px-4 xl:px-8">
+
+
+<div class="grid grid-cols-2 lg:grid-cols-8 gap-4 lg:pt-12">
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded px-6 py-8">
+        <h1 class="font-bold text-3xl text-primary-text">JPEG隐写术之UED</h1>
+        <div class="flex flex-wrap flex-row items-center my-2 text-tertiary-text">
+    <div class="mr-6 my-2">
+        <i class="fas fa-calendar mr-1"></i>
+        <span>2019-07-01</span>
+    </div>
+    <div class="mr-6 my-2">
+        <i class="fas fa-clock mr-1"></i>
+        <span>6分钟阅读时长</span>
+    </div>
+    
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-folder mr-1"></i>
+        
+        <a href="https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/" class="hover:text-eureka">科研</a>
+        
+    </div>
+    
+
+    
+    <div class="mr-6 my-2">
+        <i class="fas fa-th-list mr-1"></i>
+        
+        <a href="https://odinaris.github.io/series/jpeg%E9%9A%90%E5%86%99%E6%9C%AF/" class="hover:text-eureka">JPEG隐写术</a>
+        
+    </div>
+    
+</div>
+        
+        
+        <div class="content">
+            <h2 id="论文信息">论文信息</h2>
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Authors</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uniform Embedding for Efficient JPEG Steganography</td>
+<td>Linjie Guo, Jiangqun Ni, and Yun Qing Shi</td>
+</tr>
+</tbody>
+</table>
+<h2 id="jpeg统计特征">JPEG统计特征</h2>
+<p>隐写分析中通常使用量化后的DCT系数来构建特征集合，用以检测JPEG隐写术。实际上，块DCT系数中的直方图和共生矩阵被广泛使用在隐写分析中。直方图对应的是一阶统计，共生矩阵对应的是二阶统计（可以捕获DCT系数之间的相关性）。</p>
+<p>一旦有秘密信息被嵌入到JPEG图像中，DCT系数的统计就会有一定程度的修改，这就给隐写分析留下了踪迹。</p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UED/1562030760847.png" alt="图1. DCT系数的直方图和共生矩阵"></p>
+<p>图1是JPEG原始DCT系数的直方图和共生矩阵。其中共生矩阵中的X2是X1的相邻系数，移动步长为1。可以看出，绝大部分系数都集中在0以及0附近。</p>
+<p>可以认为DCT系数的一阶统计特征是<strong>类拉普拉斯分布</strong>的，这个事实需要注意。</p>
+<h2 id="nsf5的嵌入变化">nsF5的嵌入变化</h2>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UED/1562031911495.png" alt="图2. 使用nsF5得到的被修改的DCT系数分布直方图"></p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UED/1562032063409.png" alt="图3. nsF5相对于原始直方图的修改统计"></p>
+<p>图2是DCT系数使用nsF5算法进行嵌入之后得到的修改后的直方图，可以看到基本上0系数已经移动到左右两边了。图3是对这些修改的统计，可以看出在0系数以及附近的修改所占比重明显。空间有限，这里就不展示共生矩阵的嵌入变化了，但基本上是与一阶统计特性相似的。</p>
+<h2 id="nsf5是如何修改的">nsF5是如何修改的？</h2>
+<p>想要理解为什么nsF5嵌入修改之后会造成上文所述的变化，就要先了解nsF5的工作流程。</p>
+<p>对于给定载荷$\alpha$，nsF5的具体工作流程如下：</p>
+<ol>
+<li>根据$\alpha$计算嵌入效率的理论界限;</li>
+<li>计算需要被修改的系数个数$n$；</li>
+<li>随机选择$n$个非零AC系数并将他们的绝对值减1.</li>
+</ol>
+<p>上文提到，DCT系数的分布是类拉普拉斯分布的，而nsF5所采用的随机选择策略，会导致大部分被修改的系数都是绝对值小的系数。也就是图中所展示的，大部分修改后的系数集中在绝对值2以内。</p>
+<h2 id="何为均匀嵌入uniform-embedding">何为均匀嵌入（Uniform Embedding）？</h2>
+<p>通过利用DCT系数的统计分布特征（类拉普拉斯分布），大部分隐写分析检测JPEG隐写术都可以获得高准确率。对于JPEG隐写术来说，即使采用一种更为有效的编码策略来使得总的系数修改数降低，嵌入后的修改系数分布特征还是相似的。这样还是会很容易被隐写分析者检测出来。</p>
+<p>这时，均匀嵌入策略就异军突起，走向历史舞台了。</p>
+<p>UE策略试图将对系数的嵌入修改扩展到所有存在的系数中去来最小化每个bin（直方图中，列可以叫做bin）的统计变化。这类似于扩频通信（spread specturm）的思想，关于扩频通信，我学通信的朋友生动地给我手绘了一张图来说明：</p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UED/1562035927784.png" alt="来自某吊打985的top211的胡傲天的亲笔手绘扩频通信原理"></p>
+<p>这是意识流的解释，懂的自然懂（滑稽）。</p>
+<h2 id="均匀嵌入失真函数ued的设计思想">均匀嵌入失真函数（UED）的设计思想</h2>
+<p>为了能够完成均匀嵌入，使用到的失真函数必须设计成不同大小的系数都能够以相同的优先级被选择到。这个失真函数就称作是均匀嵌入失真函数（Uniform Embedding Distortion）。</p>
+<p>用x表示具有类拉普拉斯分布特征的DCT系数，那么UED使用到的失真函数应该具有下面这种形式：</p>
+<p>$$\rho(x)=1/|x|$$</p>
+<p>系数值越大，失真判定越小，被选择用于嵌入修改的概率也就越大。即，系数x被选择的概率随着x的绝对值增大而减小，成反比。</p>
+<p><img src="https://odinaris-1259564738.cos.ap-shanghai.myqcloud.com/UED/1562036863430.png" alt="图4. UED的分布曲线"></p>
+<p>图4绘制了上述介绍的分布的大致曲线，a是DCT系数的分布，b就是UED每个系数被选择的概率分布，c就是被选择的系数分布的大致曲线。</p>
+<h2 id="对自然图像模型的参考">对自然图像模型的参考</h2>
+<p>很明显看出，使用UED来设计失真时，对绝对值大的DCT系数的修改数量是高于之前提出的方法的。</p>
+<p>现有的JPEG隐写分析方法一般会利用自然图像模型的优势，即根据量化后DCT系数的一阶和二阶统计特性来进行隐写分析。</p>
+<p>如果某种图像模型可以准确的表示DCT系数的分布状况（我的理解是能够对分布情况提出合理的量化表述），那么对载体进行任何轻微的修改都会被检测出来。</p>
+<p>幸运的是，对于自然图像来说，DCT系数的分布严重依赖图像内容，每种内容不同的图像的分布特征都有明显差别。也就是说自然图像的统计特征没有任何一种图像模型可以准确估计出来。这对于隐写术来说，无疑是件好事。</p>
+<p>为了证明自然图像在一阶和二阶统计上的偏差，作者首先计算直方图$p(x)$的均值$\mu(x)$和标准差$\sigma(x)$。然后用归一化变异系数（coefficient of variation）来定义标准差和均值的比：</p>
+<p>$$Cv(x)=\frac {\sigma(x)} {\mu(x)}$$</p>
+<p>这里就体现了用相对变化来衡量失真的作用，因为<strong>无论用均值和标准差来独自证明检测能力随系数值的变化，都是不合理的</strong>。</p>
+<p>篇幅限制，这些量随系数绝对值增大的变化这里不作展示，只陈述结果。</p>
+<p>作者发现，$Cv(x)$随着$x$的绝对值增加而增加，这说明随着$x$的绝对值增加，DCT系数直方图偏差严重 ，这句十分不理解，但结合论文中对二阶统计的介绍，是说随着系数增大，更难以去建模统计特征，也就是抗隐写分析的能力更好吧（存疑）。</p>
+<p>根据这个结论，如果使每个$x$的相对修改率与它自身的$Cv$值成比例的话，就可以使得对所有x做出均匀的修改，并且一阶统计特性的统计影响也能最小化。在二阶统计上也观察到了相似的效果。因此，修改一个DCT系数，在统计上的影响依赖于系数本身大小以及和它相邻的系数大小。</p>
+<h2 id="均匀嵌入失真函数的设计">均匀嵌入失真函数的设计</h2>
+<ul>
+<li>基于单系数的均匀嵌入失真（SC-UED）</li>
+</ul>
+<p>用$c_{ij}$表示在$(i,j)$位置上的DCT系数，SC-UED可以设计如下：</p>
+<p>$$\rho_{ij}^{SC}=|c_{ij}|^{-1}.$$</p>
+<p>没错，就是上面提到的失真函数设计思想中的一般形式。</p>
+<ul>
+<li>基于联合系数的均匀嵌入失真（JC-UED）</li>
+</ul>
+<p>设计更加实用的UED，不知需要考虑到DCT系数自身大小，它的块间和块内相邻的系数都需要被考虑在内。作者认为块内和块间相邻系数有着最强的数值相关性。将多个系数同时考虑在内的失真函数就是基于联合系数的均匀嵌入失真（JC-UED）：</p>
+<p>$$\rho_{ij}^{JC}=\sum_{d_{ia} \in N_{ia}}(|c_{ij}|+|d_{ia}|+a_{ia})^{-1}+\sum_{d_{ir} \in N_{ir}}(|c_{ij}|+|d_{ir}|+a_{ir})^{-1}.$$</p>
+<p>其中$N_{ia}={c_{i+1,j},c_{i-1,j},c_{i,j+1},c_{i,j-1}}$和$N_{ir}={c_{i+8j},c_{i-8,j},c_{i,j+8},c_{i,j-8}}$分别表示块内相邻系数和块间相邻系数。$a_{ia}$和$a_{ir}$是调节参数，具体值可根据实验确定。</p>
+<h2 id="对ued的总结">对UED的总结</h2>
+<p>因为以往的JPEG隐写术，如nsF5算法对于DCT系数的修改大都集中在零AC系数附近，这是由DCT系数的类拉普拉斯分布及随机选择策略决定的。为了减少这种明显的隐写嵌入特征，作者提出了均匀嵌入策略，试图将修改平均分布到所有系数中，从而最小化失真，导致更低的统计可检测性，提高隐写术的安全性。在UE的思想下，作者设计了两种失真函数，SC-UED和JC-UED，其中JC-UED能够同时兼顾一阶和二阶统计特性，起到很好的均匀嵌入效果。</p>
+<h2 id="疑问">疑问</h2>
+<p>图3的数据分布我目前不知道作何解释，论文里说的是使用nsF5得到的数据相对于原图再统计上的变化。可能是我哪里理解不到位吗？这里先占个坑，后续确认理解无误再进行说明。</p>
+
+        </div>
+        
+        <div class="my-4">
+    
+    <a href="https://odinaris.github.io/tags/%E7%A7%91%E7%A0%94/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#科研</a>
+    
+    <a href="https://odinaris.github.io/tags/jpeg/" class="inline-block bg-tertiary-bg text-sm rounded px-3 py-1 my-1 mr-2 hover:text-eureka">#JPEG</a>
+    
+</div>
+        
+        
+        
+        
+        
+        <div class="py-2">
+    
+    <div class="flex flex-col md:flex-row items-center my-8">
+        <a href="https://odinaris.github.io/authors/duyang/" class="w-24 h-24 md:mr-4">
+            
+            
+            <img src="https://odinaris.github.io/authors/duyang/avatar.jpg" class="w-full bg-primary-bg rounded-full" alt="Avatar">
+            
+        </a>
+        <div class="w-full md:w-auto mt-4 md:mt-0">
+            <a href="https://odinaris.github.io/authors/duyang/" class="block font-bold text-lg pb-1 mb-2 border-b">杜洋</a>
+            <span class="block pb-2">我欲因之梦吴越，一夜飞渡镜湖月。</span>
+            
+            
+            <a href="mailto:duyang@stu.ahu.edu.cn" class="mr-1">
+                <i class="fas fa-envelope"></i>
+            </a>
+            
+            
+            <a href="https://github.com/odinaris" class="mr-1">
+                <i class="fab fa-github"></i>
+            </a>
+            
+        </div>
+    </div>
+    
+</div>
+        
+        
+        
+<div class="flex flex-col md:flex-row md:justify-between -mx-2 mt-4 px-2 pt-4 border-t">
+    <div>
+        
+        <span class="block font-bold">上一页</span>
+        <a href="https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/" class="block">JPEG隐写术之UERD</a>
+        
+    </div>
+    <div class="md:text-right mt-4 md:mt-0">
+        
+        <span class="block font-bold">下一页</span>
+        <a href="https://odinaris.github.io/posts/2019-06-30-about-time/" class="block">电影《About Time》</a>
+        
+    </div>
+</div>
+
+        
+    </div>
+    
+    <div class="col-span-2">
+        
+        
+<div class="bg-secondary-bg rounded p-6">
+    <h3 class="text-lg font-semibold mb-4">系列文章</h3>
+    <div class="content">
+        
+        
+        <a href="https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/">JPEG隐写术之UERD</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/">JPEG隐写术之UED</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/">JPEG隐写术之F5、-F5和nsF5</a>
+        <br />
+        
+        <a href="https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/">JPEG隐写术之J-UNIWARD</a>
+        <br />
+        
+        
+    </div>
+</div>
+        
+        
+        <div class="sticky top-16 z-10 hidden lg:block px-6 py-4  bg-primary-bg ">
+    <span class="text-lg font-semibold">本页内容</span>
+</div>
+<div class="sticky-toc hidden lg:block px-6 pb-6 ">
+    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#论文信息">论文信息</a></li>
+    <li><a href="#jpeg统计特征">JPEG统计特征</a></li>
+    <li><a href="#nsf5的嵌入变化">nsF5的嵌入变化</a></li>
+    <li><a href="#nsf5是如何修改的">nsF5是如何修改的？</a></li>
+    <li><a href="#何为均匀嵌入uniform-embedding">何为均匀嵌入（Uniform Embedding）？</a></li>
+    <li><a href="#均匀嵌入失真函数ued的设计思想">均匀嵌入失真函数（UED）的设计思想</a></li>
+    <li><a href="#对自然图像模型的参考">对自然图像模型的参考</a></li>
+    <li><a href="#均匀嵌入失真函数的设计">均匀嵌入失真函数的设计</a></li>
+    <li><a href="#对ued的总结">对UED的总结</a></li>
+    <li><a href="#疑问">疑问</a></li>
+  </ol>
+</nav>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        enableStickyToc();
+    });
+</script>
+        
+    </div>
+    
+
+    
+    
+    <div
+        class="col-span-2  lg:col-span-6 bg-secondary-bg rounded p-6">
+        <h2 class="text-lg font-semibold mb-4">相关</h2>
+        <div class="content">
+            
+            <a href="https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/">JPEG隐写术之F5、-F5和nsF5</a>
+            <br />
+            
+            <a href="https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/">JPEG隐写术之J-UNIWARD</a>
+            <br />
+            
+            <a href="https://odinaris.github.io/posts/2019-03-15-latex-ieeetran%E6%A8%A1%E6%9D%BF%E8%B8%A9%E5%9D%91%E6%97%A5%E5%BF%97/">Latex - IEEEtran模板踩坑日志</a>
+            <br />
+            
+        </div>
+    </div>
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        hljs.initHighlightingOnLoad();
+    })
+</script>
+
+            </div>
+        </div>
+        
+    </main>
+
+    <footer>
+        <div class="container mx-auto">
+            <div class="max-w-screen-xl"><footer class="w-full text-center p-6 pin-b text-sm text-tertiary-text">
+    <p> Powered by the <a href="https://github.com/wangchucheng/hugo-eureka" class="hover:text-eureka">Eureka</a> theme for <a href="https://gohugo.io" class="hover:text-eureka">Hugo</a></p>
+</footer></div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hexo on 临水撷石</title>
+    <link>https://odinaris.github.io/tags/hexo/</link>
+    <description>Recent content in Hexo on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 28 Jun 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/tags/hexo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hexo主题优化配置记录</title>
+      <link>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2019-06-28-hexo%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Fri, 28 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2019-06-28-hexo%E4%B8%BB%E9%A2%98%E4%BC%98%E5%8C%96%E9%85%8D%E7%BD%AE%E8%AE%B0%E5%BD%95/</guid>
+      <description>最近在网上查询了很多关于如何优化配置Hexo主题的博客，对自己的博客进行了各种各样的探索。猛然发现如果不记录自己做了哪些修改，以后可能都不知道如何怎样关闭/删除/更新。故把自己使用到的配置和参考的博客记录下来。</description>
+    </item>
+    
+  </channel>
+</rss>

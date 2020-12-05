@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>图像处理 on 临水撷石</title>
+    <link>https://odinaris.github.io/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/</link>
+    <description>Recent content in 图像处理 on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 13 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>什么是数字图像中的冗余？</title>
+      <link>https://odinaris.github.io/posts/2019-07-13-%E5%85%B3%E4%BA%8E%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E4%B8%AD%E7%9A%84%E5%86%97%E4%BD%99/</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-07-13-%E5%85%B3%E4%BA%8E%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E4%B8%AD%E7%9A%84%E5%86%97%E4%BD%99/</guid>
+      <description>因为信息隐藏的实现依赖于图像自身存在的冗余，此文首先分析了信息隐藏与图像冗余之间的关系，然后介绍了关于数字图像中存在的几种冗余。</description>
+    </item>
+    
+  </channel>
+</rss>

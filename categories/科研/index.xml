@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>科研 on 临水撷石</title>
+    <link>https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/</link>
+    <description>Recent content in 科研 on 临水撷石</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 09 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://odinaris.github.io/categories/%E7%A7%91%E7%A0%94/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ECCV2020对抗样本论文汇总</title>
+      <link>https://odinaris.github.io/posts/2020-10-09-eccv2020%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%B1%87%E6%80%BB/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2020-10-09-eccv2020%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%B1%87%E6%80%BB/</guid>
+      <description>ECCV2020对抗样本相关论文汇总梳理。</description>
+    </item>
+    
+    <item>
+      <title>科研绘图(四)资料推荐</title>
+      <link>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E5%9B%9B-%E8%B5%84%E6%96%99%E6%8E%A8%E8%8D%90/</link>
+      <pubDate>Fri, 10 Jul 2020 11:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E5%9B%9B-%E8%B5%84%E6%96%99%E6%8E%A8%E8%8D%90/</guid>
+      <description>注：本文例图较少，不利于感受。之后找到合适的配图会及时更新在这里。</description>
+    </item>
+    
+    <item>
+      <title>科研绘图(三)字体及图片导出</title>
+      <link>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%89-%E5%AD%97%E4%BD%93/</link>
+      <pubDate>Fri, 10 Jul 2020 10:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%89-%E5%AD%97%E4%BD%93/</guid>
+      <description>注：本文例图较少，不利于感受。之后找到合适的配图会及时更新在这里。</description>
+    </item>
+    
+    <item>
+      <title>科研绘图(二)配色</title>
+      <link>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%BA%8C-%E9%85%8D%E8%89%B2/</link>
+      <pubDate>Fri, 10 Jul 2020 09:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%BA%8C-%E9%85%8D%E8%89%B2/</guid>
+      <description>目前最新出版的论文中，插图大部分都是彩色插图。框架的模块，实验的数据，都可以在图中以不同的颜色来进行区分凸出。但是要想绘制的插图简约而美观，能够将要表达的信息清晰地传递给审稿人和读者，绘图时需要合理地搭配颜色。</description>
+    </item>
+    
+    <item>
+      <title>科研绘图(一)设计构思</title>
+      <link>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/</link>
+      <pubDate>Fri, 10 Jul 2020 08:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE/%E7%A7%91%E7%A0%94%E7%BB%98%E5%9B%BE%E4%B8%80-%E8%AE%BE%E8%AE%A1%E6%9E%84%E6%80%9D/</guid>
+      <description>之所以想写科研绘图这个系列，是因为最近组里的一些同学在写论文时，在绘图制表时，遇到过一些困扰。同时他们也希望把图表绘制得更好看，看起来能够达到顶刊的水平，显得“高大上”。因此，想专门写几篇文章来分享一些我的经验。</description>
+    </item>
+    
+    <item>
+      <title>什么是数字图像中的冗余？</title>
+      <link>https://odinaris.github.io/posts/2019-07-13-%E5%85%B3%E4%BA%8E%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E4%B8%AD%E7%9A%84%E5%86%97%E4%BD%99/</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-07-13-%E5%85%B3%E4%BA%8E%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E4%B8%AD%E7%9A%84%E5%86%97%E4%BD%99/</guid>
+      <description>因为信息隐藏的实现依赖于图像自身存在的冗余，此文首先分析了信息隐藏与图像冗余之间的关系，然后介绍了关于数字图像中存在的几种冗余。</description>
+    </item>
+    
+    <item>
+      <title>JPEG隐写术之UERD</title>
+      <link>https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/</link>
+      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-07-02-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Buerd/</guid>
+      <description>本文对JPEG隐写术中的UERD算法进行相关介绍。</description>
+    </item>
+    
+    <item>
+      <title>JPEG隐写术之UED</title>
+      <link>https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/</link>
+      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-07-01-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bued/</guid>
+      <description>本文介绍了JPEG隐写术中的UED算法。首先介绍了JPEG的统计特性与隐写分析之间的关系，然后介绍了nsF5算法的修改策略，从而引出均匀嵌入（Uniform Embedding）策略的思想并给出了均匀嵌入失真（Uniform Embedding Distortion）函数的公式。</description>
+    </item>
+    
+    <item>
+      <title>JPEG隐写术之F5、-F5和nsF5</title>
+      <link>https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/</link>
+      <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-06-27-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bf5-f5%E5%92%8Cnsf5/</guid>
+      <description>本文首先对JPEG隐写术中经典算法F5进行介绍，由于F5存在的缺陷，进而引出对改进算法-F5和nsF5的介绍。</description>
+    </item>
+    
+    <item>
+      <title>JPEG隐写术之J-UNIWARD</title>
+      <link>https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/</link>
+      <pubDate>Wed, 26 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://odinaris.github.io/posts/2019-06-26-jpeg%E9%9A%90%E5%86%99%E6%9C%AF%E4%B9%8Bj-uniward/</guid>
+      <description>本文对JPEG经典隐写术J-UNIWARD进行介绍，首先介绍方向滤波器组，然后解释失真函数的设计思想，最后介绍UNIWARD的加性近似过程。</description>
+    </item>
+    
+  </channel>
+</rss>
